@@ -1,6 +1,7 @@
 import { createServer } from './server';
 import { connectDB, disconnectDB } from './db';
 import { connectRedis, disconnectRedis, closeQueue, startWorker, stopWorker, initializeQueue } from './queue';
+import { initRateLimiter } from './middleware';
 import { logger } from './utils/logger';
 import { config } from './config';
 import fs from 'fs';
@@ -39,6 +40,10 @@ async function bootstrap() {
     // 2. Connect to Redis
     logger.info('Connecting to Redis...');
     await connectRedis();
+
+    // 2.5 Initialize rate limiter (after Redis is ready)
+    logger.info('Initializing rate limiter...');
+    initRateLimiter();
 
     // 3. Initialize BullMQ Queue (after Redis is connected)
     logger.info('Initializing job queue...');

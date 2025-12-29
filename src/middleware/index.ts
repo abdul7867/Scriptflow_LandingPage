@@ -2,6 +2,7 @@
 export {
   helmetMiddleware,
   rateLimiter,
+  initRateLimiter,
   strictRateLimiter,
   hppMiddleware,
   mongoSanitizeMiddleware,

@@ -81,7 +81,16 @@ function createRateLimiter() {
 // In production, Redis should connect before first request
 let _rateLimiter: ReturnType<typeof rateLimit> | null = null;
 
+// Create the rate limiter instance outside of request handler
+// to avoid express-rate-limit validation warning
+export function initRateLimiter(): void {
+  if (!_rateLimiter) {
+    _rateLimiter = createRateLimiter();
+  }
+}
+
 export const rateLimiter = (req: any, res: any, next: any) => {
+  // If not initialized yet, create it (fallback)
   if (!_rateLimiter) {
     _rateLimiter = createRateLimiter();
   }
