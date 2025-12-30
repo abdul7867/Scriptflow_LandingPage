@@ -1,8 +1,11 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion, Variants, AnimatePresence } from "framer-motion";
+import { ArrowRight, Smartphone, Wand2, FileText, Heart, MessageCircle, Share2, Link, RefreshCw, Zap, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useScarcity } from "@/lib/useScarcity";
+import IPhoneMockup from "@/components/ui/IPhoneMockup";
+import { TypewriterEffect } from "@/components/ui/TypewriterEffect";
 
 // Headline Variants
 const containerVariants: Variants = {
@@ -27,9 +30,10 @@ const wordVariants: Variants = {
 
 export default function Hero() {
   const headlineWords = ["STOP", "GUESSING.", "START", "GOING", "VIRAL."];
+  const { spots, isFlashing } = useScarcity();
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-4 overflow-hidden">
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-4 overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[10%] left-[10%] w-[600px] h-[600px] bg-acid-magenta/20 rounded-full blur-[120px] mix-blend-screen" />
@@ -37,19 +41,22 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center space-y-10 max-w-5xl mx-auto">
-        {/* Badge */}
+        {/* Scarcity Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ 
+             opacity: 1, 
+             y: 0,
+             backgroundColor: isFlashing ? "rgba(239, 68, 68, 0.5)" : "rgba(255, 255, 255, 0.05)" // Red-500 vs White/5
+           }}
+           className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md transition-colors duration-500"
         >
-          <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
+          <span className={`w-2 h-2 rounded-full ${isFlashing ? "bg-white" : "bg-red-500"} animate-pulse`} />
           <span className="text-sm font-medium text-zinc-300">
-            Beta Access Open
+            High Demand: <span className={isFlashing ? "text-white font-bold" : "text-white"}>{spots} spots left</span>
           </span>
         </motion.div>
 
-        {/* Typewriter Headline */}
         <motion.h1
           variants={containerVariants}
           initial="hidden"
@@ -109,191 +116,192 @@ export default function Hero() {
         </motion.button>
       </div>
 
-      {/* Living Dashboard */}
+      {/* 3-Part Flow Container - Machine Interface */}
       <motion.div
-        initial={{ opacity: 0, y: 100, rotateX: 20 }}
-        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ duration: 1, delay: 1.2, ease: "easeOut" }}
-        whileHover={{ scale: 1.02, rotateX: 2 }}
-        className="w-full max-w-5xl mt-20 relative perspective-1000"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+        className="w-full max-w-6xl mt-24 relative z-10"
       >
-        <div className="relative rounded-xl border border-glass-border bg-gradient-to-br from-zinc-900 to-black backdrop-blur-xl shadow-2xl overflow-hidden aspect-[16/9] group flex flex-col">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative">
           
-          {/* Glass Reflection */}
-          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-white/10 to-transparent -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl opacity-20 pointer-events-none" />
-
-          {/* Dashboard Header */}
-          <div className="w-full h-12 border-b border-glass-border/30 bg-white/5 flex items-center px-4 gap-2 z-10 shrink-0">
-            <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
-              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
-              <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
-            </div>
-            {/* Search Bar Detail */}
-            <div className="ml-4 w-48 h-6 bg-white/5 rounded-full border border-white/5 mx-auto hidden md:block" />
-          </div>
-
-          <div className="flex flex-1 relative z-10 overflow-hidden">
-             {/* Sidebar (Fake UI) */}
-             <div className="w-16 md:w-48 h-full border-r border-glass-border/30 bg-white/2 hidden md:flex flex-col p-4 gap-4">
-                 {[...Array(5)].map((_, i) => (
-                    <div key={i} className="h-2 w-full bg-white/5 rounded-full" style={{ width: `${Math.random() * 50 + 40}%` }} />
-                 ))}
-                 <div className="mt-auto h-24 w-full bg-white/5 rounded-lg border border-white/5" />
+          {/* DATA STREAM BEAMS (Desktop Only) */}
+          <div className="hidden lg:block absolute inset-0 pointer-events-none z-0">
+             
+             {/* Beam 1: Input (Phone -> Core) */}
+             <div className="absolute top-1/2 left-[18%] right-[50%] h-[2px] bg-gradient-to-r from-zinc-800 via-zinc-700 to-transparent -translate-y-1/2">
+                {[...Array(3)].map((_, i) => (
+                    <motion.div
+                        key={`input-particle-${i}`}
+                        className="absolute top-1/2 left-0 w-2 h-2 bg-white rounded-sm shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                        initial={{ x: "0%",  opacity: 0, y: "-50%" }}
+                        animate={{ x: "100%", opacity: [0, 1, 0] }}
+                        transition={{ 
+                            repeat: Infinity, 
+                            duration: 2, 
+                            delay: i * 0.6,
+                            ease: "linear"
+                        }}
+                    />
+                ))}
              </div>
 
-             {/* Main Content Area */}
-             <div className="flex-1 flex flex-col items-center justify-center relative px-4 md:px-12 py-8 overflow-visible">
-                 
-                 {/* Metadata Badges */}
-                 <div className="absolute top-6 left-6 md:left-12 flex items-center gap-2">
-                     {["TARGET: GEN Z", "MOOD: HIGH ENERGY", "DURATION: 0:45"].map((badge, i) => (
-                        <span key={i} className="text-[9px] md:text-[10px] font-mono text-zinc-500 border border-white/10 px-2 py-1 rounded bg-white/5 uppercase tracking-wider">
-                            {badge}
-                        </span>
-                     ))}
-                 </div>
+             {/* Beam 2: Output (Core -> Editor) */}
+             <div className="absolute top-1/2 left-[50%] right-[18%] h-[2px] bg-gradient-to-r from-transparent via-acid-lime/30 to-acid-lime/10 -translate-y-1/2">
+                {[...Array(3)].map((_, i) => (
+                    <motion.div
+                        key={`output-particle-${i}`}
+                        className={cn(
+                            "absolute top-1/2 left-0 w-8 h-[3px] shadow-[0_0_15px_rgba(189,255,0,0.8)]",
+                            i % 2 === 0 ? "bg-acid-lime" : "bg-acid-magenta shadow-[0_0_15px_rgba(255,0,255,0.8)]"
+                        )}
+                        initial={{ x: "0%", opacity: 0, y: "-50%" }}
+                        animate={{ x: "100%", opacity: [0, 1, 0] }}
+                        transition={{ 
+                            repeat: Infinity, 
+                            duration: 1.5, 
+                            delay: i * 0.4,
+                            ease: "circIn"
+                        }}
+                    />
+                ))}
+            </div>
+          </div>
 
-                 {/* Virality Score Widget */}
-                 <div className="absolute top-6 right-6 md:right-12 hidden md:flex items-start gap-4 p-3 rounded-lg bg-black/40 border border-white/5 backdrop-blur-sm">
-                    {/* Ring Chart */}
-                    <div className="relative w-12 h-12 flex items-center justify-center">
-                        <svg className="w-full h-full -rotate-90">
-                            <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-white/10" />
-                            <motion.circle 
-                                cx="24" cy="24" r="20" 
-                                stroke="#22c55e" strokeWidth="4" 
-                                fill="transparent" 
-                                strokeDasharray="125.6" 
-                                strokeDashoffset="125.6"
-                                animate={{ strokeDashoffset: 10 }} // 92/100ish
-                                transition={{ duration: 1.5, delay: 2, ease: "easeOut" }}
-                                strokeLinecap="round"
-                            />
-                        </svg>
-                        <span className="absolute text-[10px] font-bold text-white">92</span>
-                    </div>
-                    {/* Checklist */}
-                    <div className="space-y-1">
-                        <div className="text-[10px] uppercase font-bold text-zinc-400 mb-1">Viral Potential: <span className="text-green-500">High</span></div>
-                        <div className="flex flex-col gap-0.5">
-                            {["Hook < 3s", "Trending Keyword", "Loopable"].map((item, i) => (
-                                <motion.div 
-                                    key={i}
-                                    initial={{ opacity: 0, x: 10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 2.5 + (i * 0.2) }}
-                                    className="flex items-center gap-1.5"
-                                >
-                                    <div className="w-2 h-2 rounded-full bg-green-500/20 flex items-center justify-center">
-                                        <div className="w-1 h-1 rounded-full bg-green-500" />
-                                    </div>
-                                    <span className="text-[9px] text-zinc-500 font-mono">{item}</span>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                 </div>
+          {/* PART 1: INPUT (Phone Mockup) */}
+          <div className="relative z-10 flex flex-col items-center">
+            <IPhoneMockup />
+            <p className="mt-6 text-zinc-500 font-mono text-sm tracking-widest uppercase">Input: Viral Reel</p>
+          </div>
 
-                 <div className="flex gap-12 items-center relative z-10 w-full justify-center">
-                     
-                     {/* Left Side: Waveform & Analysis */}
-                     <div className="flex flex-col items-center">
-                         {/* Active Audio Waveform */}
-                        <div className="relative z-10 flex items-center gap-1.5 md:gap-3 h-32 md:h-48 items-end">
-                            {[...Array(9)].map((_, i) => (
-                                <motion.div
-                                key={i}
-                                animate={{
-                                    height: ["20%", "80%", "40%", "90%", "30%"],
-                                }}
-                                transition={{
-                                    repeat: Infinity,
-                                    duration: 0.8,
-                                    ease: "easeInOut",
-                                    delay: i * 0.05,
-                                    repeatType: "mirror"
-                                }}
-                                className="w-3 md:w-6 rounded-t-full bg-gradient-to-t from-acid-lime to-acid-magenta shadow-[0_0_20px_rgba(189,255,0,0.4)]"
-                                style={{
-                                    height: "40%"
-                                }}
+          {/* PART 2: PROCESS (AI Core) */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-64 lg:h-auto">
+             <div className="relative w-40 h-40">
+                {/* Spinning Core Rings */}
+                {[...Array(3)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className={cn(
+                            "absolute inset-0 border-2 rounded-full",
+                            i === 0 ? "border-acid-lime/30" : i === 1 ? "border-acid-magenta/30" : "border-white/10"
+                        )}
+                        style={{ borderStyle: i === 2 ? 'dashed' : 'solid' }}
+                        animate={{ rotate: i % 2 === 0 ? 360 : -360, scale: [1, 1.1, 1] }}
+                        transition={{ repeat: Infinity, duration: 10 - (i * 2), ease: "linear" }}
+                    />
+                ))}
+                
+                {/* Central Prism */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div
+                        animate={{ 
+                            boxShadow: ["0 0 20px #FFFFFF", "0 0 30px #BDFF00", "0 0 50px #FF00FF", "0 0 20px #FFFFFF"],
+                            scale: [1, 1.1, 1.05, 1],
+                        }}
+                        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                        className="w-20 h-20 bg-black border border-white/20 backdrop-blur-md rounded-xl flex items-center justify-center rotate-45 relative overflow-hidden"
+                    >
+                         {/* Internal Alchemy Swirl */}
+                        <motion.div 
+                             className="absolute inset-[-50%] bg-gradient-to-t from-white/20 via-acid-lime/40 to-acid-magenta/40 blur-xl"
+                             animate={{ rotate: 360 }}
+                             transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                        />
+                        <Zap className="w-8 h-8 text-white -rotate-45 relative z-10 drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                    </motion.div>
+                </div>
+
+                {/* Flying Bits */}
+                {[...Array(8)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 bg-white rounded-full bg-acid-lime"
+                        initial={{ x: 0, y: 0, opacity: 0 }}
+                        animate={{ 
+                            x: (Math.random() - 0.5) * 200, 
+                            y: (Math.random() - 0.5) * 200, 
+                            opacity: [0, 1, 0],
+                            scale: [0, 1, 0]
+                        }}
+                        transition={{ repeat: Infinity, duration: 2, delay: Math.random() * 2 }}
+                    />
+                ))}
+            </div>
+            <p className="mt-8 text-zinc-500 font-mono text-sm tracking-widest uppercase flex items-center gap-2">
+                <RefreshCw className="w-3 h-3 animate-spin text-acid-lime" />
+                <span className="text-zinc-400">Refactoring Logic...</span>
+            </p>
+          </div>
+
+          {/* PART 3: OUTPUT (Script Editor) */}
+          <div className="relative z-10 flex flex-col items-center">
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-full max-w-sm bg-[#0A0A0A] rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[400px]"
+            >
+                {/* Window Header */}
+                <div className="h-8 bg-white/5 border-b border-white/5 flex items-center px-3 gap-2">
+                    <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20" />
+                    </div>
+                    <span className="ml-auto text-[10px] font-mono text-zinc-600">script_v1.txt</span>
+                </div>
+
+                {/* Editor Content */}
+                <div className="p-6 font-mono text-xs md:text-sm leading-relaxed text-zinc-400 font-light overflow-hidden relative">
+                    {/* Scanline */}
+                    <motion.div 
+                        className="absolute top-0 left-0 w-full h-1 bg-acid-lime/10 shadow-[0_0_10px_rgba(189,255,0,0.2)]"
+                        animate={{ top: ["0%", "100%"] }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                    />
+                    
+                    <div className="space-y-4">
+                        <div className="space-y-1">
+                            <span className="text-[10px] uppercase text-acid-magenta font-bold tracking-wider opacity-70">/// HOOK</span>
+                            <div className="text-white border-l-2 border-acid-magenta/50 pl-3">
+                                <TypewriterEffect 
+                                    text={`"Stop scrolling if you want to fix your engagement right now."`}
+                                    delay={2}
+                                    duration={1}
+                                    textColor="text-white"
                                 />
-                            ))}
-                        </div>
-
-                        <div className="mt-8 relative z-10 text-center flex flex-col items-center gap-4">
-                            <motion.p 
-                                animate={{ opacity: [0.5, 1, 0.5] }}
-                                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                                className="font-mono text-acid-lime text-sm md:text-base tracking-widest uppercase"
-                            >
-                                Analyzing Viral Patterns...
-                            </motion.p>
-                            
-                            <div className="flex items-center gap-4 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                                <span className="text-xs font-mono text-zinc-400">0:12</span>
-                                <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center pl-0.5 shadow-lg shadow-white/20">
-                                    <div className="w-0 h-0 border-l-[6px] border-l-black border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent" />
-                                </div>
-                                <span className="text-xs font-mono text-zinc-600">0:45</span>
                             </div>
                         </div>
-                     </div>
+                        
+                        <div className="space-y-1">
+                            <span className="text-[10px] uppercase text-blue-400 font-bold tracking-wider opacity-70">/// BODY</span>
+                            <div className="text-zinc-300 border-l-2 border-blue-400/50 pl-3">
+                                <TypewriterEffect 
+                                    text={`Most creators fail because they ignore the first 3 seconds. Here is the exact framework used by the top 1%...`}
+                                    delay={3.2}
+                                    duration={2}
+                                    textColor="text-zinc-300"
+                                />
+                            </div>
+                        </div>
 
-                     {/* Right Side: Phone Mockup */}
-                     <div className="hidden lg:block relative w-[200px] h-[400px] rounded-[30px] border-4 border-zinc-800 bg-zinc-950 overflow-hidden shadow-2xl rotate-3">
-                         {/* Dynamic Dynamic Island */}
-                         <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full z-20" />
-                         
-                         {/* Phone Screen Content */}
-                         <div className="absolute inset-0 bg-zinc-900 flex flex-col">
-                             {/* Video Background Placeholder */}
-                             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 z-10" />
-                             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1611162616475-46b635cb6868?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-40 grayscale" />
-                             
-                             {/* UI Icons Right */}
-                             <div className="absolute right-2 bottom-20 flex flex-col gap-4 z-20 items-center">
-                                 <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center">
-                                    <div className="w-4 h-4 bg-white rounded-full" /> {/* Heart */}
-                                 </div>
-                                 <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md" /> {/* Comment */}
-                                 <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md" /> {/* Share */}
+                        <div className="space-y-1">
+                             <span className="text-[10px] uppercase text-acid-lime font-bold tracking-wider opacity-70">/// CTA</span>
+                             <div className="text-white border-l-2 border-acid-lime/50 pl-3">
+                                <TypewriterEffect 
+                                    text={`"Comment 'SCRIPT' and I'll send you the template instantly."`}
+                                    delay={5.5}
+                                    duration={1}
+                                    textColor="text-white"
+                                />
+                                <span className="inline-block w-2 h-4 bg-acid-lime ml-1 align-middle animate-pulse" />
                              </div>
-
-                             {/* Script Overlay */}
-                             <div className="mt-auto p-4 z-20 space-y-2 mb-12">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="w-6 h-6 rounded-full bg-brand-orange" />
-                                    <span className="text-[10px] font-bold text-white">@viral_creator</span>
-                                </div>
-                                <motion.p 
-                                    className="text-xs text-white font-medium leading-relaxed drop-shadow-md"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 1 }}
-                                >
-                                    <span className="bg-brand-orange/80 px-1 rounded-sm text-white">Stop scrolling.</span> Here is the exact prompt to 10x your views.
-                                    <span className="inline-block w-1 h-3 bg-brand-orange ml-1 animate-pulse" />
-                                </motion.p>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-
-                 {/* Timeline UI */}
-                 <div className="absolute bottom-6 left-6 right-6 md:left-12 md:right-12 h-px bg-white/10 flex justify-between items-end pb-2">
-                     <div className="h-2 w-px bg-white/20 relative"><span className="absolute top-3 left-1/2 -translate-x-1/2 text-[9px] font-mono text-zinc-600">0:00</span></div>
-                     <div className="h-1 w-px bg-white/10" />
-                     <div className="h-1 w-px bg-white/10" />
-                     <div className="h-2 w-px bg-white/20 relative"><span className="absolute top-3 left-1/2 -translate-x-1/2 text-[9px] font-mono text-zinc-600">0:15</span></div>
-                     <div className="h-1 w-px bg-white/10" />
-                     <div className="h-1 w-px bg-white/10" />
-                     <div className="h-2 w-px bg-white/20 relative"><span className="absolute top-3 left-1/2 -translate-x-1/2 text-[9px] font-mono text-zinc-600">0:30</span></div>
-                 </div>
-
-             </div>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+            <p className="mt-6 text-zinc-500 font-mono text-sm tracking-widest uppercase">Output: Unique Script</p>
           </div>
+
         </div>
       </motion.div>
     </section>
