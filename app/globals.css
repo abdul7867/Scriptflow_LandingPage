@@ -6,6 +6,14 @@
 :root {
   --background: #050505;
   --foreground: #ffffff;
+
+  /* ACID BRUTALISM PALETTE */
+  --acid-bg: #050505;
+  --acid-text-primary: #ffffff;
+  --acid-text-muted: #a1a1aa;
+  --acid-lime: #BDFF00;
+  --acid-magenta: #FF00FF;
+  --acid-gradient: linear-gradient(135deg, var(--acid-lime), var(--acid-magenta));
 }
 
 html {

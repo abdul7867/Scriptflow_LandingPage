@@ -46,32 +46,30 @@ export default function Features() {
 
       <div className="max-w-5xl mx-auto relative">
         
-        {/* Mobile: Straight Line (Left Aligned) */}
         <div className="absolute md:hidden left-[20px] top-0 bottom-0 w-[2px] bg-white/5 rounded-full" />
         <motion.div 
             style={{ scaleY: pathLength }}
-            className="absolute md:hidden left-[20px] top-0 bottom-0 w-[2px] bg-brand-orange origin-top rounded-full z-0 shadow-[0_0_15px_#FF5500]"
+            className="absolute md:hidden left-[20px] top-0 bottom-0 w-[2px] bg-acid-lime origin-top rounded-full z-0 shadow-[0_0_15px_rgba(189,255,0,0.6)]"
         />
 
         {/* Desktop: Curved SVG Path */}
         <div className="hidden md:block absolute inset-0 w-full h-full pointer-events-none">
             <svg 
-              className="w-full h-full drop-shadow-[0_0_8px_rgba(255,85,0,0.6)]" 
+              className="w-full h-full drop-shadow-[0_0_15px_rgba(189,255,0,0.8)]" 
               viewBox="0 0 100 105" 
               preserveAspectRatio="none"
             >
                  <defs>
                    <linearGradient id="fiberGradient" x1="0%" y1="0%" x2="0%" y2="100%" gradientUnits="userSpaceOnUse">
-                     <stop offset="0%" stopColor="#FF5500" />
-                     <stop offset="50%" stopColor="#FF0080" />
-                     <stop offset="100%" stopColor="#7928CA" />
+                     <stop offset="0%" stopColor="#BDFF00" />
+                     <stop offset="100%" stopColor="#FF00FF" />
                    </linearGradient>
                  </defs>
                  <motion.path
                     d="M 50 0 C 50 15, 20 15, 20 35 C 20 55, 80 55, 80 70 C 80 85, 50 85, 50 105"
                     fill="none"
                     stroke="url(#fiberGradient)"
-                    strokeWidth="4"
+                    strokeWidth="6"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     vectorEffect="non-scaling-stroke"
@@ -99,19 +97,19 @@ export default function Features() {
                   className="hidden md:block absolute top-1/2 -translate-y-1/2 w-5 h-5 z-10"
                   style={{ left: isLeft ? "20%" : "80%", transform: "translate(-50%, -50%)" }}
                 >
-                    <div className="w-full h-full bg-brand-dark border-2 border-brand-orange rounded-full shadow-[0_0_15px_#FF5500]" />
+                    <div className="w-full h-full bg-brand-dark border-2 border-acid-lime rounded-full shadow-[0_0_15px_rgba(189,255,0,0.5)]" />
                 </div>
                 
                 {/* Mobile Dot */}
                 <div className="md:hidden absolute left-[20px] top-0 w-4 h-4 -translate-x-[7px] z-10">
-                   <div className="w-full h-full bg-brand-dark border-2 border-brand-orange rounded-full shadow-[0_0_10px_#FF5500]" />
+                   <div className="w-full h-full bg-brand-dark border-2 border-acid-lime rounded-full shadow-[0_0_10px_rgba(189,255,0,0.5)]" />
                 </div>
 
                 {/* Content Side */}
                 <div className={`w-full md:w-1/2 pl-16 md:pl-0 ${isLeft ? "md:pr-32 md:text-right" : "md:pl-32 md:text-left"}`}>
                     <div className="flex flex-col gap-4">
                         <div className={`inline-flex items-center gap-3 ${isLeft ? "md:flex-row-reverse" : "md:flex-row"}`}>
-                            <div className="p-3 rounded-lg bg-surface border border-glass-border text-brand-orange bg-white/5">
+                            <div className="p-3 rounded-lg bg-surface border border-glass-border text-acid-lime bg-white/5">
                                 <feature.icon className="w-6 h-6" />
                             </div>
                             <h3 className="font-heading font-bold text-2xl md:text-4xl text-white uppercase tracking-tight">

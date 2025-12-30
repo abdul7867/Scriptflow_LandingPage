@@ -32,7 +32,8 @@ export default function Hero() {
     <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-4 overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-brand-orange/15 rounded-full blur-[120px]" />
+        <div className="absolute top-[10%] left-[10%] w-[600px] h-[600px] bg-acid-magenta/20 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute bottom-[10%] right-[10%] w-[500px] h-[500px] bg-acid-lime/15 rounded-full blur-[120px] mix-blend-screen" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center text-center space-y-10 max-w-5xl mx-auto">
@@ -55,11 +56,21 @@ export default function Hero() {
           animate="visible"
           className="flex flex-wrap justify-center gap-x-4 gap-y-2 font-heading font-bold text-5xl md:text-8xl tracking-tighter leading-[0.9]"
         >
-          {headlineWords.map((word, i) => (
-            <motion.span key={i} variants={wordVariants} className="text-white">
-              {word}
-            </motion.span>
-          ))}
+          {headlineWords.map((word, i) => {
+            const isViral = word.includes("VIRAL");
+            return (
+                <motion.span 
+                    key={i} 
+                    variants={wordVariants} 
+                    className={cn(
+                        "text-white",
+                        isViral && "text-transparent bg-clip-text bg-gradient-to-br from-acid-lime to-acid-magenta"
+                    )}
+                >
+                {word}
+                </motion.span>
+            )
+          })}
         </motion.h1>
 
         <motion.p
@@ -79,7 +90,7 @@ export default function Hero() {
           transition={{ delay: 1 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="group relative inline-flex items-center gap-2 px-8 py-4 bg-brand-orange text-white font-bold rounded-full overflow-hidden"
+          className="group relative inline-flex items-center gap-2 px-8 py-4 bg-acid-lime text-black font-bold rounded-full overflow-hidden"
         >
           <span className="relative z-10">Join the First 100</span>
           <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
@@ -93,7 +104,7 @@ export default function Hero() {
               ease: "linear",
               repeatDelay: 1,
             }}
-            className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+            className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-transparent via-white/50 to-transparent -skew-x-12"
           />
         </motion.button>
       </div>
@@ -132,7 +143,7 @@ export default function Hero() {
              </div>
 
              {/* Main Content Area */}
-             <div className="flex-1 flex flex-col items-center justify-center relative p-8">
+             <div className="flex-1 flex flex-col items-center justify-center relative px-4 md:px-12 py-8 overflow-visible">
                  
                  {/* Metadata Badges */}
                  <div className="absolute top-6 left-6 md:left-12 flex items-center gap-2">
@@ -189,21 +200,21 @@ export default function Hero() {
                      {/* Left Side: Waveform & Analysis */}
                      <div className="flex flex-col items-center">
                          {/* Active Audio Waveform */}
-                        <div className="relative z-10 flex items-center gap-1.5 md:gap-3 h-32 md:h-48">
+                        <div className="relative z-10 flex items-center gap-1.5 md:gap-3 h-32 md:h-48 items-end">
                             {[...Array(9)].map((_, i) => (
                                 <motion.div
                                 key={i}
                                 animate={{
-                                    height: ["20%", "80%", "20%"],
+                                    height: ["20%", "80%", "40%", "90%", "30%"],
                                 }}
                                 transition={{
                                     repeat: Infinity,
-                                    duration: 1.5,
+                                    duration: 0.8,
                                     ease: "easeInOut",
-                                    delay: i * 0.1, // Stagger effect
+                                    delay: i * 0.05,
                                     repeatType: "mirror"
                                 }}
-                                className="w-3 md:w-6 rounded-full bg-gradient-to-t from-orange-500 to-red-500 shadow-[0_0_20px_rgba(255,85,0,0.6)]"
+                                className="w-3 md:w-6 rounded-t-full bg-gradient-to-t from-acid-lime to-acid-magenta shadow-[0_0_20px_rgba(189,255,0,0.4)]"
                                 style={{
                                     height: "40%"
                                 }}
@@ -211,14 +222,22 @@ export default function Hero() {
                             ))}
                         </div>
 
-                        <div className="mt-8 relative z-10 text-center">
+                        <div className="mt-8 relative z-10 text-center flex flex-col items-center gap-4">
                             <motion.p 
                                 animate={{ opacity: [0.5, 1, 0.5] }}
                                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                                className="font-mono text-brand-orange text-sm md:text-base tracking-widest uppercase mb-6"
+                                className="font-mono text-acid-lime text-sm md:text-base tracking-widest uppercase"
                             >
                                 Analyzing Viral Patterns...
                             </motion.p>
+                            
+                            <div className="flex items-center gap-4 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                                <span className="text-xs font-mono text-zinc-400">0:12</span>
+                                <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center pl-0.5 shadow-lg shadow-white/20">
+                                    <div className="w-0 h-0 border-l-[6px] border-l-black border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent" />
+                                </div>
+                                <span className="text-xs font-mono text-zinc-600">0:45</span>
+                            </div>
                         </div>
                      </div>
 

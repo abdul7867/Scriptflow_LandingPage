@@ -57,13 +57,13 @@ export default function ComparisonToggle() {
               className="absolute inset-0"
             >
               {/* The Old Way: Boring Card */}
-              <div className="w-full h-full bg-zinc-100 rounded-xl p-12 shadow-sm text-zinc-800 font-mono text-xl leading-relaxed border border-zinc-200 flex flex-col gap-6">
-                 <div className="flex gap-2 mb-4 opacity-50">
-                    <div className="w-3 h-3 rounded-full bg-zinc-300" />
-                    <div className="w-3 h-3 rounded-full bg-zinc-300" />
-                    <div className="w-3 h-3 rounded-full bg-zinc-300" />
+              <div className="w-full h-full bg-[#e5e5e5] rounded-xl p-12 shadow-sm text-[#333] font-mono text-xl leading-relaxed border border-zinc-300 flex flex-col gap-6" style={{ fontFamily: '"Courier New", Courier, monospace' }}>
+                 <div className="flex gap-2 mb-4 opacity-30">
+                    <div className="w-3 h-3 rounded-full bg-zinc-400" />
+                    <div className="w-3 h-3 rounded-full bg-zinc-400" />
+                    <div className="w-3 h-3 rounded-full bg-zinc-400" />
                  </div>
-                 <p className="opacity-70">
+                 <p className="opacity-80">
                    Video idea... maybe talk about AI?<br/>
                    umm start with a question...<br/>
                    <br/>
@@ -74,7 +74,7 @@ export default function ComparisonToggle() {
                    <br/>
                    (come back to this later)
                  </p>
-                 <div className="mt-auto opacity-30 italic text-xs">
+                 <div className="mt-auto opacity-40 italic text-xs font-sans">
                     Last edited: Yesterday 
                  </div>
               </div>
@@ -89,7 +89,7 @@ export default function ComparisonToggle() {
               className="absolute inset-0"
             >
               {/* The ScriptFlow Way: High-Tech Glass Card */}
-              <div className="w-full h-full rounded-xl p-12 border border-glass-border bg-gradient-to-br from-zinc-900 to-black backdrop-blur-xl shadow-[0_0_50px_rgba(255,85,0,0.1)] flex flex-col overflow-hidden">
+              <div className="w-full h-full rounded-xl p-12 border border-glass-border bg-gradient-to-br from-zinc-900 to-black backdrop-blur-xl shadow-[0_0_50px_rgba(189,255,0,0.1)] flex flex-col overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
                     <div className="flex gap-2">
@@ -97,7 +97,7 @@ export default function ComparisonToggle() {
                         <div className="w-4 h-4 rounded-full bg-yellow-500/20 text-yellow-500 flex items-center justify-center text-[10px]">●</div>
                         <div className="w-4 h-4 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center text-[10px]">●</div>
                     </div>
-                    <div className="px-3 py-1 rounded-md bg-brand-orange/10 border border-brand-orange/20 text-xs text-brand-orange font-mono uppercase tracking-wider">
+                    <div className="px-3 py-1 rounded-md bg-acid-lime/10 border border-acid-lime/20 text-xs text-acid-lime font-mono uppercase tracking-wider">
                         Viral Pattern Detected
                     </div>
                 </div>
@@ -108,16 +108,16 @@ export default function ComparisonToggle() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="p-6 rounded-lg bg-green-500/10 border border-green-500/20 relative group"
+                        className="p-6 rounded-lg bg-acid-lime/10 border border-acid-lime/20 relative group"
                     >
-                        <div className="absolute top-2 right-2 px-2 py-1 rounded text-[10px] bg-green-500/20 text-green-400 font-mono uppercase tracking-wide">
+                        <div className="absolute top-2 right-2 px-2 py-1 rounded text-[10px] bg-acid-lime/20 text-acid-lime font-mono uppercase tracking-wide">
                             Hook (0:03)
                         </div>
-                        <p className="text-zinc-100 font-medium z-10 relative leading-snug">
+                        <p className="text-white font-medium z-10 relative leading-snug">
                             "Stop scrolling. Here is the exact prompt to 10x your views."
                         </p>
                         {/* Pulse Effect */}
-                        <div className="absolute inset-0 bg-green-500/5 rounded-lg animate-pulse z-0 pointer-events-none" />
+                        <div className="absolute inset-0 bg-acid-lime/5 rounded-lg animate-pulse z-0 pointer-events-none" />
                     </motion.div>
 
                     {/* Body Section */}
@@ -132,12 +132,12 @@ export default function ComparisonToggle() {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="p-6 rounded-lg bg-brand-orange/10 border border-brand-orange/20"
+                        className="p-6 rounded-lg bg-acid-magenta/10 border border-acid-magenta/20"
                     >
                         <div className="flex justify-between items-center mb-2">
-                            <span className="text-xs text-brand-orange/70 font-mono uppercase">CTA</span>
+                            <span className="text-xs text-acid-magenta/70 font-mono uppercase">CTA</span>
                         </div>
-                         <p className="text-brand-orange font-bold text-2xl">
+                         <p className="text-acid-magenta font-bold text-2xl">
                             "Comment 'SCRIPT' for access."
                         </p>
                     </motion.div>

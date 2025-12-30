@@ -37,7 +37,7 @@ export default function FloatingDock() {
               </span>
             </div>
 
-            <button className="group flex items-center gap-2 px-4 py-2 bg-brand-orange hover:bg-orange-600 text-white text-xs font-bold rounded-full transition-all">
+            <button className="group flex items-center gap-2 px-4 py-2 bg-acid-lime hover:bg-lime-400 text-black text-xs font-bold rounded-full transition-all">
               Join Now
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </button>

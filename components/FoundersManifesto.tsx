@@ -16,21 +16,21 @@ export default function FoundersManifesto() {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] opacity-40 pointer-events-none mix-blend-multiply" />
         
         <div className="relative z-10 flex flex-col gap-8">
-            <div className="w-12 h-1 bg-brand-orange mb-4" />
+            <div className="w-12 h-1 bg-acid-lime mb-4" />
             
-            <h2 className="font-serif italic text-4xl md:text-5xl leading-tight">
+            <h2 className="font-serif italic text-5xl md:text-6xl leading-tight">
                 Why I built this.
             </h2>
             
-            <div className="space-y-6 font-sans text-lg md:text-xl leading-relaxed text-zinc-800 font-medium">
+            <div className="space-y-6 font-sans text-xl md:text-2xl leading-relaxed text-zinc-800 font-medium">
                 <p>
-                    I spent 3 years trying to grow on Instagram. I had the ideas, but my scripts were <span className="line-through decoration-brand-orange decoration-2 text-zinc-400">boring</span>.
+                    I spent 3 years trying to grow on Instagram. I had the ideas, but my scripts were <span className="line-through decoration-acid-magenta decoration-2 text-zinc-400">boring</span>.
                 </p>
                 <p>
                     I built ScriptFlow to fix my own problem. It's not just another AI wrapper—it's the tool I wished I had day one.
                 </p>
                 <p>
-                    I'm looking for <span className="bg-brand-orange/20 px-1 rounded-sm">100 creators</span> to help me refine it. No bots, just us building something great.
+                    I'm looking for <span className="bg-acid-lime/20 px-1 rounded-sm">100 creators</span> to help me refine it. No bots, just us building something great.
                 </p>
             </div>
 
@@ -39,7 +39,7 @@ export default function FoundersManifesto() {
                     Founder
                 </div>
                 {/* Signature - SVG Implementation */}
-                <div className="w-32 h-12 relative text-zinc-900">
+                <div className="w-48 h-16 relative text-zinc-900">
                     <svg viewBox="0 0 150 60" className="w-full h-full stroke-current fill-none stroke-2">
                         <motion.path
                             initial={{ pathLength: 0 }}

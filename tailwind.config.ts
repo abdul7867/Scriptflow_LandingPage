@@ -21,6 +21,8 @@ const config: Config = {
         },
         "brand-orange": "#FF5500",
         "brand-dark": "#050505",
+        "acid-lime": "#BDFF00",
+        "acid-magenta": "#FF00FF",
         "glass-border": "rgba(255, 255, 255, 0.08)",
         background: "var(--background)",
         foreground: "var(--foreground)",
