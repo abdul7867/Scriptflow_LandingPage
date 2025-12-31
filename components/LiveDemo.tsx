@@ -1,27 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, Clipboard, Check, Search, Zap, BarChart, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const LOADING_PHASES = [
-  { text: "Detecting Hook Pattern...", icon: Search },
-  { text: "Analyzing Pacing & Cuts...", icon: BarChart },
-  { text: "Identifying Viral Keywords...", icon: Zap },
-];
+import { TextScramble } from "@/components/ui/TextScramble";
 
 export default function LiveDemo() {
-  const [step, setStep] = useState<"input" | "matrix" | "result">("input");
+  const [step, setStep] = useState<"input" | "analyzing" | "result">("input");
   const [copied, setCopied] = useState(false);
   const [inputText, setInputText] = useState("");
-  const [isHoveringButton, setIsHoveringButton] = useState(false);
 
   const handleAnalyze = () => {
     if (!inputText) return;
-    setStep("matrix");
+    setStep("analyzing");
 
-    // 1.5s Decrypt/Matrix Effect then show result
+    // Simulate "Decryption" delay before showing resolved text
     setTimeout(() => {
       setStep("result");
     }, 1500);
@@ -40,7 +33,7 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
   };
 
   return (
-    <section className="w-full py-32 px-4 bg-brand-dark flex flex-col items-center border-t border-white/5 relative overflow-hidden">
+    <section className="w-full py-32 px-4 bg-black flex flex-col items-center border-t border-white/5 relative overflow-hidden font-mono">
       
       {/* Background Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-acid-lime/5 rounded-full blur-[120px] pointer-events-none" />
@@ -57,206 +50,156 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
             </p>
         </div>
 
-        {/* The Machine Interface */}
+        {/* The Terminal Interface */}
         <div className="relative">
-            <div className="rounded-2xl border border-zinc-800 bg-[#0A0A0A] overflow-hidden shadow-2xl relative min-h-[400px] flex flex-col font-mono">
+            <motion.div 
+                className={cn(
+                    "rounded-md border border-zinc-800 bg-[#0A0A0A] overflow-hidden shadow-2xl relative min-h-[400px] flex flex-col",
+                    step === "analyzing" && "border-acid-lime/50" // Light up border on analyze
+                )}
+                animate={step === "analyzing" ? {
+                    x: [-2, 2, -2, 2, 0],
+                    transition: { duration: 0.4 }
+                } : {}}
+            >
                 
-                {/* Window Controls (Decorative) */}
-                <div className="h-10 bg-zinc-900 border-b border-zinc-800 flex items-center px-4 gap-2">
-                    <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-zinc-600" />
-                        <div className="w-3 h-3 rounded-full bg-zinc-600" />
-                        <div className="w-3 h-3 rounded-full bg-zinc-600" />
+                {/* Window Header */}
+                <div className="h-8 bg-zinc-900/50 border-b border-zinc-800 flex items-center px-4 gap-2 text-xs text-zinc-500 select-none">
+                   <div className="flex gap-1.5 opacity-50">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20" />
                     </div>
-                    <div className="ml-auto text-[10px] text-zinc-500 font-mono tracking-widest uppercase">
-                        TERMINAL_V2.0
-                    </div>
+                    <span className="ml-auto">bash -- 80x24</span>
                 </div>
 
-                {/* Content Area */}
-                <div className="flex-1 p-8 flex flex-col items-center justify-center relative">
-                    <AnimatePresence mode="wait">
+                {/* Terminal Body */}
+                <div className="flex-1 p-6 text-sm md:text-base leading-relaxed text-zinc-300 relative">
+                    
+                    {/* Shell Input Line */}
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-0 font-mono mb-4">
+                        <span className="text-acid-lime font-bold whitespace-nowrap shrink-0 select-none">
+                            root@scriptflow:~ $
+                        </span>
                         
-                        {/* STEP 1: INPUT (Terminal Redesign) */}
-                        {step === "input" && (
-                            <motion.div 
-                                key="input"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                className="w-full max-w-2xl"
+                        <div className="flex-1 relative">
+                            {step === "input" ? (
+                                <input 
+                                    type="text" 
+                                    value={inputText}
+                                    onChange={(e) => setInputText(e.target.value)}
+                                    placeholder="Paste_Link_Here" 
+                                    className="w-full bg-transparent border-none focus:ring-0 text-white placeholder-zinc-700 outline-none pl-2 py-0 h-auto"
+                                    autoFocus
+                                    onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
+                                />
+                            ) : (
+                                <span className="pl-2 text-white">{inputText}</span>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Button if input is present */}
+                    {step === "input" && inputText && (
+                        <motion.div 
+                            initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
+                            className="absolute bottom-6 right-6"
+                        >
+                            <button 
+                                onClick={handleAnalyze}
+                                className="bg-acid-lime text-black px-4 py-1 text-xs font-bold uppercase tracking-widest hover:bg-[#b0ef00]"
                             >
-                                <div className="bg-[#050505] p-6 border-l-4 border-acid-lime relative shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-                                    
-                                    {/* Terminal Structure */}
-                                    <div className="flex flex-col gap-4">
-                                        
-                                        {/* Input Line */}
-                                        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-0 font-mono text-sm md:text-base">
-                                            <span className="text-acid-lime shrink-0">
-                                                {"> root/users/guest/analyze: "}
-                                            </span>
-                                            <input 
-                                                type="text" 
-                                                value={inputText}
-                                                onChange={(e) => setInputText(e.target.value)}
-                                                placeholder="_Paste_Reel_Link_" 
-                                                className="w-full bg-transparent border-none focus:ring-0 text-white placeholder-zinc-700 outline-none pl-2 caret-acid-lime"
-                                                autoFocus
-                                            />
+                                Execute
+                            </button>
+                        </motion.div>
+                    )}
+
+                    {/* Analysis Output */}
+                    <AnimatePresence>
+                        {step !== "input" && (
+                            <motion.div className="space-y-4 mt-8 text-zinc-400">
+                                
+                                {/* Status Log */}
+                                <div className="space-y-1 text-xs text-zinc-500">
+                                    <div>[init] Process started...</div>
+                                    <div>[fetch] Downloading source content...</div>
+                                    <div className="text-acid-lime">[success] Source acquired.</div>
+                                    <div className="border-t border-dashed border-white/20 my-2 w-full" />
+                                </div>
+
+                                {/* Scrambled Result */}
+                                {step === "analyzing" && (
+                                    <div className="text-white break-all opacity-80 animate-pulse">
+                                        <TextScramble text="!@#$%^&*()_+{}|:<>?~!@#$%^&*()_+{}|:<>?~!@#$%^&*()_+{}|:<>?" duration={3} className="text-acid-lime" />
+                                        <br />
+                                        <TextScramble text="XJSAD_&@!_ASDJK_9012_ASDJK_1290_ASDJK_1290" duration={3} />
+                                    </div>
+                                )}
+
+                                {/* Resolved Script */}
+                                {step === "result" && (
+                                    <motion.div 
+                                        initial={{ opacity: 0 }} 
+                                        animate={{ opacity: 1 }} 
+                                        className="space-y-6 pt-2"
+                                    >
+                                        <div className="space-y-1">
+                                            <span className="text-xs text-acid-lime uppercase font-bold tracking-wider">/// HOOK DETECTED</span>
+                                            <div className="pl-4 border-l-2 border-acid-lime text-white">
+                                                <TextScramble text='"Stop scrolling if you want to fix your engagement right now."' className="text-neon-lime" />
+                                            </div>
                                         </div>
 
-                                        {/* Action Line */}
-                                        <div className="flex justify-end mt-4">
-                                            <button 
-                                                onClick={handleAnalyze}
-                                                onMouseEnter={() => setIsHoveringButton(true)}
-                                                onMouseLeave={() => setIsHoveringButton(false)}
-                                                disabled={!inputText}
-                                                className={cn(
-                                                    "border border-acid-lime px-6 py-2 text-sm font-bold tracking-widest transition-all duration-200",
-                                                    isHoveringButton 
-                                                        ? "bg-acid-lime text-black" 
-                                                        : "text-acid-lime bg-transparent"
-                                                )}
-                                            >
-                                                [ EXECUTE ]
+                                        <div className="space-y-1">
+                                            <span className="text-xs text-zinc-500 uppercase font-bold tracking-wider">/// FRAMEWORK EXTRACTED</span>
+                                            <div className="pl-4 border-l-2 border-zinc-800 text-zinc-300">
+                                                <TextScramble text='"Most creators fail because they ignore the first 3 seconds. Here is the exact framework used by the top 1%..."' duration={2.5} />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                             <span className="text-xs text-acid-magenta uppercase font-bold tracking-wider">/// CTA OPTIMIZED</span>
+                                            <div className="pl-4 border-l-2 border-acid-magenta text-white">
+                                                <TextScramble text='"Comment SCRIPT and I will send you the template instantly."' duration={2} />
+                                            </div>
+                                        </div>
+
+                                        <div className="h-8" /> {/* Spacer */}
+                                        
+                                        <div className="flex gap-4">
+                                            <button onClick={handleCopy} className="text-acid-lime hover:underline underline-offset-4 decoration-acid-lime text-xs uppercase tracking-widest">
+                                                {copied ? "[ COPIED ]" : "[ COPY SCRIPT ]"}
+                                            </button>
+                                            <button onClick={() => { setStep("input"); setInputText(""); }} className="text-zinc-500 hover:text-white text-xs uppercase tracking-widest">
+                                                [ NEW SESSION ]
                                             </button>
                                         </div>
-
-                                    </div>
-                                    
-                                    {/* Blink Cursor Decor (Optional, CSS handles input caret well usually, but we can add a trailing block if desired) */}
-                                </div>
-
-                                {/* Examples */}
-                                <div className="mt-8 flex flex-wrap gap-4 justify-center">
-                                    <span className="text-zinc-600 font-mono text-xs self-center">test_params:</span>
-                                    {["instagram.com/reel/C3...", "tiktok.com/@alexhormozi/..."].map((ex, i) => (
-                                        <button 
-                                            key={i}
-                                            onClick={() => setInputText(ex)}
-                                            className="text-xs text-zinc-500 font-mono hover:text-acid-lime transition-colors border-b border-transparent hover:border-acid-lime"
-                                        >
-                                            {ex}
-                                        </button>
-                                    ))}
-                                </div>
+                                    </motion.div>
+                                )}
                             </motion.div>
                         )}
-
-                        {/* STEP 2: MATRIX RAIN (Decrypt) */}
-                        {step === "matrix" && (
-                            <motion.div 
-                                key="matrix"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="w-full max-w-2xl h-64 bg-black font-mono text-acid-lime p-4 overflow-hidden relative border border-acid-lime/20"
-                            >
-                                <MatrixRain />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none" />
-                                <div className="absolute bottom-4 left-4 bg-acid-lime/10 px-2 py-1 text-xs border border-acid-lime/20 animate-pulse">
-                                    DECRYPTING_SOURCE...
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {/* STEP 3: RESULT */}
-                        {step === "result" && (
-                            <motion.div 
-                                key="result"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="w-full max-w-3xl flex flex-col items-start gap-6 font-mono"
-                            >
-                                <div className="w-full bg-zinc-900/50 border border-white/5 rounded-none border-l-2 border-l-white p-6 md:p-8 space-y-8 relative overflow-hidden backdrop-blur-sm">
-                                     {/* Scanline Effect */}
-                                    <div className="absolute top-0 left-0 w-full h-1 bg-acid-lime/10 animate-[scan_3s_linear_infinite]" />
-
-                                    {/* Script Content */}
-                                    <div className="space-y-6">
-                                        <div className="group">
-                                            <span className="flex items-center gap-2 text-xs font-bold text-acid-lime mb-2 tracking-wider uppercase">
-                                                <span className="w-2 h-2 rounded-full bg-acid-lime animate-pulse" />
-                                                [HOOK 0-3s]
-                                            </span>
-                                            <p className="text-xl md:text-2xl text-white font-medium pl-4 border-l-2 border-acid-lime group-hover:bg-acid-lime/5 transition-colors duration-300 py-2">
-                                                "Stop scrolling if you want to fix your engagement right now."
-                                            </p>
-                                        </div>
-
-                                        <div className="group">
-                                            <span className="flex items-center gap-2 text-xs font-bold text-acid-magenta mb-2 tracking-wider uppercase">
-                                                <span className="w-2 h-2 rounded-full bg-acid-magenta animate-pulse" />
-                                                [VALUE PROP 3-15s]
-                                            </span>
-                                            <p className="text-lg text-zinc-300 pl-4 border-l-2 border-acid-magenta/50 group-hover:border-acid-magenta group-hover:bg-acid-magenta/5 transition-colors duration-300 py-2">
-                                                "Most creators fail because they ignore the first 3 seconds. Here is the exact framework used by the top 1%..."
-                                            </p>
-                                        </div>
-
-                                        <div className="group">
-                                            <span className="flex items-center gap-2 text-xs font-bold text-acid-lime mb-2 tracking-wider uppercase">
-                                                <span className="w-2 h-2 rounded-full bg-acid-lime animate-pulse" />
-                                                [CTA]
-                                            </span>
-                                            <p className="text-lg text-white pl-4 border-l-2 border-acid-lime/50 group-hover:border-acid-lime group-hover:bg-acid-lime/5 transition-colors duration-300 py-2">
-                                                "Comment 'SCRIPT' and I'll send you the template instantly."
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Actions */}
-                                <div className="flex gap-4 w-full">
-                                    <button 
-                                        onClick={handleCopy}
-                                        className="h-12 px-6 bg-acid-lime text-black font-bold uppercase tracking-widest text-sm hover:bg-[#a6e000] transition-colors flex items-center gap-2"
-                                    >
-                                        {copied ? "COPIED" : "COPY_SOURCE"}
-                                    </button>
-                                    <button 
-                                        onClick={() => { setStep("input"); setInputText(""); }}
-                                        className="h-12 px-6 border border-zinc-700 text-zinc-400 font-bold uppercase tracking-widest text-sm hover:text-white hover:border-white transition-colors"
-                                    >
-                                        RESET_TERMINAL
-                                    </button>
-                                </div>
-                            </motion.div>
-                        )}
-
                     </AnimatePresence>
+
                 </div>
-            </div>
+            </motion.div>
+            
+            {/* Quick Links for Demo */}
+            {step === "input" && (
+                <div className="mt-4 flex flex-wrap gap-4 justify-center opacity-60 hover:opacity-100 transition-opacity">
+                    {["instagram.com/reel/viral_1", "tiktok.com/@creator/best_hooks"].map((ex, i) => (
+                        <button 
+                            key={i}
+                            onClick={() => setInputText(ex)}
+                            className="text-[10px] text-zinc-500 font-mono hover:text-acid-lime border-b border-transparent hover:border-acid-lime transition-all"
+                        >
+                            {ex}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
       </div>
     </section>
   );
 }
 
-// Simple Matrix Rain Component
-function MatrixRain() {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%^&*";
-    const [drops, setDrops] = useState<string[]>([]);
-    
-    // Initialize drops
-    useEffect(() => {
-        // Just random strings to simulate the rain for this short duration
-        const interval = setInterval(() => {
-             setDrops(prev => {
-                 const newLine = Array(20).fill(0).map(() => letters[Math.floor(Math.random() * letters.length)]).join(" ");
-                 return [newLine, ...prev.slice(0, 15)];
-             });
-        }, 50);
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <div className="w-full h-full text-xs leading-4 opacity-70 break-all select-none flex flex-col items-center justify-center text-center mask-image-fade">
-            {drops.map((line, i) => (
-                <div key={i} style={{ opacity: 1 - (i * 0.05) }} className="w-full">{line}</div>
-            ))}
-        </div>
-    );
-}

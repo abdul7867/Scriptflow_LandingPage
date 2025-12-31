@@ -16,20 +16,24 @@ const GravityDot = ({
     mouseX: any, 
     mouseY: any 
 }) => {
-    // Physical Pull Calculation
+    // Physical Force Calculation
     const x = useTransform([mouseX, mouseY], ([mx, my]) => {
         if (typeof mx !== 'number' || typeof my !== 'number') return 0;
         const dx = mx - cx;
         const dy = my - cy;
         const dist = Math.sqrt(dx * dx + dy * dy);
         
-        // Physics: Magnetism
-        const maxDist = 150; // Range of influence
+        // Physics: Repulsion (Magnetism)
+        const maxDist = 120; // Range of influence
         if (dist > maxDist) return 0; 
         
-        // Stronger pull when closer
-        const pull = Math.pow((1 - dist / maxDist), 2) * 40; // Max 40px pull
-        return (dx / dist) * pull;
+        // Repel: Move away from mouse
+        // Force calculation: Stronger when closer 
+        const force = Math.max(0, (maxDist - dist) / maxDist); // 0 to 1
+        const power = -40; // Negative for repulsion (move away from mouse)
+        
+        // Direction vector (dx/dist, dy/dist) * power * force
+        return (dx / dist) * power * force;
     });
 
     const y = useTransform([mouseX, mouseY], ([mx, my]) => {
@@ -37,20 +41,24 @@ const GravityDot = ({
         const dx = mx - cx;
         const dy = my - cy;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist > 150) return 0;
-        const pull = Math.pow((1 - dist / 150), 2) * 40;
-        return (dy / dist) * pull;
+        
+        const maxDist = 120;
+        if (dist > maxDist) return 0;
+
+        const force = Math.max(0, (maxDist - dist) / maxDist);
+        const power = -40;
+
+        return (dy / dist) * power * force;
     });
 
     // Color/Glow Reaction
     const color = useTransform([mouseX, mouseY], ([mx, my]) => {
-        if (typeof mx !== 'number' || typeof my !== 'number') return "rgba(82, 82, 91, 0.3)"; // zinc-600 @ 30%
+        if (typeof mx !== 'number' || typeof my !== 'number') return "rgba(82, 82, 91, 0.3)"; 
         const dx = mx - cx;
         const dy = my - cy;
         const dist = Math.sqrt(dx * dx + dy * dy);
         
-        // Threshold for "Activation"
-        return dist < 100 ? "#d946ef" : "rgba(82, 82, 91, 0.3)"; // acid-magenta vs dim grey
+        return dist < 120 ? "#d946ef" : "rgba(82, 82, 91, 0.3)";
     });
 
     const scale = useTransform([mouseX, mouseY], ([mx, my]) => {
@@ -58,18 +66,19 @@ const GravityDot = ({
         const dx = mx - cx;
         const dy = my - cy;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        return dist < 100 ? 1.5 : 1;
+        // Slightly shrink when being pushed away? Or grow? Let's grow slightly
+        return dist < 120 ? 1.2 : 1;
     });
 
-    // Smooth out the movement
-    const smoothX = useSpring(x, { stiffness: 150, damping: 15 });
-    const smoothY = useSpring(y, { stiffness: 150, damping: 15 });
+    // Physics: "Dragging through water" -> High Damping, Lower Stiffness
+    const smoothX = useSpring(x, { stiffness: 100, damping: 20, mass: 1.5 });
+    const smoothY = useSpring(y, { stiffness: 100, damping: 20, mass: 1.5 });
 
     return (
         <motion.div
             className="absolute rounded-full flex items-center justify-center bg-zinc-900 border border-white/5"
             style={{ 
-                left: cx - 12, // Center the 24px dot
+                left: cx - 12, 
                 top: cy - 12,
                 x: smoothX, 
                 y: smoothY,

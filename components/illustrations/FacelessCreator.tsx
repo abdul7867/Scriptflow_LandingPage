@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useMotionValue, useVelocity, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
 import CountUp from "react-countup";
 import { cn } from "@/lib/utils";
 
@@ -15,50 +15,72 @@ function ViewsCounter() {
 }
 
 // WaveformBar Component
-// WaveformBar Component
-const WaveformBar = ({ index }: { index: number }) => {
-    // Chaos Mode Randoms
-    const r1 = Math.random() * 100 + "%";
-    const r2 = Math.random() * 100 + "%";
-    const r3 = Math.random() * 100 + "%";
+const WaveformBar = ({ index, speed }: { index: number, speed: any }) => {
+    // Transform speed into height. 
+    // Max height 100%, idle 10%.
+    // Adding randomness based on index to create "wave"
     
-    // Gradient Palette (Neon Lime, Magenta)
-    const activeColor = ["#bdff00", "#a3e635", "#d946ef", "#bdff00"]; 
+    // Physics: The faster the mouse, the taller the bar
+    const height = useTransform(speed, (s: number) => {
+        // s (speed) typically ranges 0 to 2000+
+        const normalizedSpeed = Math.min(s / 1000, 1); // 0 to 1
+        
+        // Random multiplier for this bar to keep it looking like audio
+        const randomFactor = 0.5 + Math.random(); 
+        
+        // Base hum is 15%. Max spike is 100%
+        const barHeight = 15 + (normalizedSpeed * 85 * randomFactor);
+        return Math.min(barHeight, 100) + "%";
+    });
+
+    const backgroundColor = useTransform(speed, (s: number) => {
+        return s > 100 ? "#bdff00" : "#3f3f46"; // Highlight when moving
+    });
+
+    // Spring for smooth bounce back
+    const smoothHeight = useSpring(height, { stiffness: 300, damping: 20 });
 
     return (
         <motion.div
-            className="w-1 bg-zinc-700 rounded-full origin-bottom"
-            variants={{
-                idle: { 
-                    height: ["10%", "20%", "10%"],
-                    backgroundColor: "#3f3f46", // zinc-700
-                    transition: {
-                        duration: 1.5,
-                        repeat: Infinity,
-                        delay: index * 0.1, // Sine wave flow
-                        ease: "easeInOut"
-                    }
-                },
-                hover: { 
-                    height: ["10%", r1, r2, r3, "50%"], 
-                    backgroundColor: activeColor,
-                    boxShadow: ["0 0 0px #bdff00", "0 0 10px #bdff00"],
-                    transition: {
-                        duration: 0.2, // Chaos Speed (4x normal)
-                        repeat: Infinity,
-                        repeatType: "mirror",
-                        delay: Math.random() * 0.2, // Random start
-                        ease: "linear"
-                    }
-                }
+            className="w-1 rounded-full origin-bottom"
+            style={{ 
+                height: smoothHeight, 
+                backgroundColor 
             }}
         />
     );
 };
 
 export default function FacelessCreator() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const velocityX = useVelocity(mouseX);
+  const velocityY = useVelocity(mouseY);
+  
+  const speed = useTransform([velocityX, velocityY], ([vx, vy]: any[]) => {
+      // Cast to number to avoid TS error
+      const vX = vx as number;
+      const vY = vy as number;
+      return Math.sqrt(vX * vX + vY * vY);
+  });
+  
+  // Smooth speed for less jittery UI
+  const smoothSpeed = useSpring(speed, { stiffness: 100, damping: 20 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+      // We track velocity based on changes.
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+  };
+
   return (
-    <div className="w-full h-full flex flex-col items-center justify-end pb-8 relative">
+    <div 
+        ref={containerRef}
+        className="w-full h-full flex flex-col items-center justify-end pb-8 relative cursor-crosshair"
+        onMouseMove={handleMouseMove}
+    >
         
         {/* Container for the Bust */}
         <div className="relative w-48 h-48">
@@ -83,11 +105,6 @@ export default function FacelessCreator() {
                     fill="url(#hoodie-grad)"
                     stroke="#bdff00"
                     strokeWidth="2"
-                    variants={{
-                        idle: { pathLength: 0, opacity: 0.8 },
-                        hover: { pathLength: 1, opacity: 1 }
-                    }}
-                    transition={{ duration: 1, ease: "easeInOut" }}
                 />
                 
                 {/* Hollow Face / Mask Area */}
@@ -98,7 +115,7 @@ export default function FacelessCreator() {
             {/* The Reactive Waveform (20 Bars) */}
             <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[70px] h-[40px] flex items-end justify-center gap-[1px] overflow-hidden">
                 {[...Array(20)].map((_, i) => (
-                    <WaveformBar key={i} index={i} />
+                    <WaveformBar key={i} index={i} speed={smoothSpeed} />
                 ))}
             </div>
 

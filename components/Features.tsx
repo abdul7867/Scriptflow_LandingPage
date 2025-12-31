@@ -64,11 +64,11 @@ const VibeCheck = () => {
                     >
                         {chaos > 60 ? (
                             <>
-                                "Stop working hard. <span className="text-acid-lime font-bold bg-acid-lime/10 px-1 rounded">It's ruining your life.</span> Here's why."
+                                &quot;Stop working hard. <span className="text-acid-lime font-bold bg-acid-lime/10 px-1 rounded">It&apos;s ruining your life.</span> Here&apos;s why.&quot;
                             </>
                         ) : (
                             <>
-                                "Here are 3 tips for <span className="text-blue-400 font-bold bg-blue-500/10 px-1 rounded">better productivity</span> at work."
+                                &quot;Here are 3 tips for <span className="text-blue-400 font-bold bg-blue-500/10 px-1 rounded">better productivity</span> at work.&quot;
                             </>
                         )}
                     </motion.p>

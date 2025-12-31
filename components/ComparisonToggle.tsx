@@ -94,7 +94,7 @@ export default function ComparisonToggle() {
                                 Hook (0:03)
                             </div>
                             <p className="text-white font-medium z-10 relative leading-snug">
-                                "Stop scrolling. Here is the exact prompt to 10x your views."
+                                &quot;Stop scrolling. Here is the exact prompt to 10x your views.&quot;
                             </p>
                             {/* Pulse Effect */}
                             <div className="absolute inset-0 bg-acid-lime/5 rounded-lg animate-pulse z-0 pointer-events-none" />
@@ -118,7 +118,7 @@ export default function ComparisonToggle() {
                                 <span className="text-xs text-acid-magenta/70 font-mono uppercase">CTA</span>
                             </div>
                              <p className="text-acid-magenta font-bold text-2xl">
-                                "Comment 'SCRIPT' for access."
+                                &quot;Comment &apos;SCRIPT&apos; for access.&quot;
                             </p>
                         </motion.div>
                     </div>

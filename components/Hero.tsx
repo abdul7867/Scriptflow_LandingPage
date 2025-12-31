@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, Variants, AnimatePresence } from "framer-motion";
-import { ArrowRight, Zap, RefreshCw } from "lucide-react";
+import { motion, Variants, LayoutGroup } from "framer-motion";
+import { ArrowRight, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScarcity } from "@/lib/useScarcity";
-import IPhoneMockup from "@/components/ui/IPhoneMockup";
-import { TypewriterEffect } from "@/components/ui/TypewriterEffect";
+import { GhostReel } from "@/components/ui/GhostReel";
+import { AlchemyPrism } from "@/components/ui/AlchemyPrism";
+import { ScriptSlate } from "@/components/ui/ScriptSlate";
+import { DataShard } from "@/components/ui/DataShard";
+import PlatformMarquee from "@/components/PlatformMarquee";
+
 
 // Headline Variants
 const containerVariants: Variants = {
@@ -29,6 +33,15 @@ const wordVariants: Variants = {
   },
 };
 
+const SHARDS = Array.from({ length: 50 }, (_, i) => {
+  let color = "bg-green-500/50"; // Visuals (Middle)
+  if (i < 15) color = "bg-red-500/50"; // Hook (Top)
+  else if (i >= 35) color = "bg-blue-500/50"; // Audio (Bottom)
+  
+  return { id: i, color };
+});
+
+
 export default function Hero() {
   const headlineWords = ["STOP", "GUESSING.", "START", "GOING", "VIRAL."];
   const { spots, isFlashing } = useScarcity();
@@ -36,41 +49,26 @@ export default function Hero() {
   // Master Timeline State
   const [step, setStep] = useState(0);
 
-  // Derived phase for backward compatibility with existing Hero animations
-  const phase = step === 0 ? 'idle'
-              : step === 1 ? 'idle' 
-              : step === 2 ? 'transfer'
-              : step === 3 ? 'generating' // processing & generating merged/sequenced
-              : step === 4 ? 'highlight'
-              : 'idle';
-  
-  // Refined sub-phase for visual richness (e.g. core processing)
-  const isProcessing = step === 2; // Trigger core animation during transfer/handoff
-  const isHighlight = step === 4; // Late stage logic
+  // Phase Logic:
+  // 0s-2s: Phone (Intact)
+  // 2s-3.5s: Flight (Explosion to Center)
+  // 3.5s-6s: Editor (Reassembly)
+  const phase = step === 0 ? 'phone'
+              : step === 1 ? 'flight'
+              : step === 2 ? 'editor'
+              : 'phone';
 
-  // 10s Master Loop
+  // 6s Master Loop
   useEffect(() => {
     const loop = () => {
-      setStep(0); // 0s: Reset / Video Plays
-      
-      // 3s: Phone Interaction (Like & Copy)
-      setTimeout(() => setStep(1), 3000);
-      
-      // 4s: Orb Transfer (Phone -> Core)
-      setTimeout(() => setStep(2), 4000);
-      
-      // 5s: Desktop Typing (Core -> Editor)
-      setTimeout(() => setStep(3), 5000);
-
-      // 8s: Highlight (Text finishes, Neon colors)
-      setTimeout(() => setStep(4), 8000);
-
-      // 10s: Reset
-      setTimeout(() => setStep(0), 10000); 
+      setStep(0); // 0s: Phone
+      setTimeout(() => setStep(1), 2000); // 2s: Flight
+      setTimeout(() => setStep(2), 3500); // 3.5s: Editor
+      setTimeout(() => setStep(0), 6000); // 6s: Reset
     };
 
     loop();
-    const interval = setInterval(loop, 10000);
+    const interval = setInterval(loop, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -164,272 +162,79 @@ export default function Hero() {
         transition={{ duration: 0.8, delay: 1.2 }}
         className="w-full max-w-6xl mt-24 relative z-10"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative">
+        <LayoutGroup>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative min-h-[500px]">
           
-          {/* DATA STREAM BEAMS (Desktop Only) */}
-          <div className="hidden lg:block absolute inset-0 pointer-events-none z-0">
-             
-             {/* Beam 1: Input (Phone -> Core) */}
-             <motion.div 
-                className="absolute top-1/2 left-[18%] right-[50%] h-[2px] -translate-y-1/2 overflow-visible"
-             >
-                {/* Extraction Layers floating across */}
-                <AnimatePresence>
-                    {phase === 'transfer' && (
-                        <>
-                            {/* Layer 1: Red (Hook) */}
-                            <motion.div
-                                initial={{ x: 0, opacity: 0, scale: 0.8, rotate: 0 }}
-                                animate={{ x: "100%", opacity: [0, 1, 0], scale: 1, rotate: 10 }}
-                                transition={{ duration: 0.8, ease: "easeInOut", delay: 0 }} 
-                                className="absolute top-[-40px] left-0 w-24 h-16 bg-red-900/50 border border-red-500 rounded-lg backdrop-blur-md z-30"
-                            />
-                             {/* Layer 2: Green (Pacing) */}
-                            <motion.div
-                                initial={{ x: 0, opacity: 0, scale: 0.8, rotate: 0 }}
-                                animate={{ x: "100%", opacity: [0, 1, 0], scale: 1, rotate: -5 }}
-                                transition={{ duration: 0.8, ease: "easeInOut", delay: 0.1 }} 
-                                className="absolute top-[0px] left-0 w-24 h-16 bg-lime-900/50 border border-lime-500 rounded-lg backdrop-blur-md z-30"
-                            />
-                             {/* Layer 3: Blue (Audio) */}
-                            <motion.div
-                                initial={{ x: 0, opacity: 0, scale: 0.8, rotate: 0 }}
-                                animate={{ x: "100%", opacity: [0, 1, 0], scale: 1, rotate: 5 }}
-                                transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} 
-                                className="absolute top-[40px] left-0 w-24 h-16 bg-blue-900/50 border border-blue-500 rounded-lg backdrop-blur-md z-30"
-                            />
-                        </>
-                    )}
-                </AnimatePresence>
-             </motion.div>
-
-             {/* Beam 2: Output (Core -> Editor) */}
-             <motion.div 
-                animate={{ opacity: phase === 'generating' ? 1 : 0.2 }}
-                transition={{ duration: 0.3 }}
-                className="absolute top-1/2 left-[50%] right-[18%] h-[2px] bg-gradient-to-r from-acid-lime to-acid-magenta -translate-y-1/2 overflow-visible"
-             >
-                {/* ORB 2: Generating (Magenta) */}
-                <AnimatePresence>
-                    {phase === 'generating' && (
-                        <motion.div
-                            initial={{ left: "0%", opacity: 0, scale: 0.5 }}
-                            animate={{ left: "100%", opacity: 1, scale: 1 }} 
-                            exit={{ opacity: 0, scale: 0 }}
-                            transition={{ duration: 0.5, ease: "linear" }} 
-                            className="absolute top-1/2 -translate-y-1/2 w-6 h-6 z-20"
-                        >
-                             <div className="w-full h-full rounded-full bg-white border-2 border-acid-magenta shadow-[0_0_15px_#FF00FF]" />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
-          </div>
-
+          {/* 1. INPUT: The Phone / Ghost Reel */}
           <div className="relative z-10 flex flex-col items-center">
-            <IPhoneMockup step={step} />
+            <GhostReel>
+                {/* Render Grid System inside Phone only if Phase is Phone */}
+                {phase === 'phone' && (
+                    <div className="w-full h-full grid grid-cols-5 gap-1">
+                        {SHARDS.map((shard, i) => (
+                             <DataShard key={shard.id} id={shard.id} color={shard.color}  phase="phone" index={i} />
+                        ))}
+                    </div>
+                )}
+            </GhostReel>
             <p className="mt-6 text-zinc-500 font-mono text-sm tracking-widest uppercase">Input: Viral Reel</p>
           </div>
 
-          {/* PART 2: PROCESS (AI Core) */}
+          {/* 2. PROCESS: Alchemy Prism / Flight Zone */}
           <div className="relative z-10 flex flex-col items-center justify-center h-64 lg:h-auto">
-             <div className="relative w-40 h-40">
-                {/* Spinning Rings */}
-                {[...Array(3)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        className={cn(
-                            "absolute inset-0 border-2 rounded-full",
-                            i === 0 ? "border-acid-lime/30" : i === 1 ? "border-acid-magenta/30" : "border-white/10",
-                            (phase === 'transfer' || phase === 'generating') && "border-white/80 shadow-[0_0_20px_rgba(255,255,255,0.5)]"
-                        )}
-                        style={{ borderStyle: i === 2 ? 'dashed' : 'solid' }}
-                        animate={{ 
-                            rotate: i % 2 === 0 ? 360 : -360, 
-                            scale: (phase === 'transfer' || phase === 'generating') ? [1, 1.2, 1] : [1, 1.1, 1] 
-                        }}
-                        transition={{ 
-                            rotate: { 
-                                repeat: Infinity, 
-                                duration: (phase === 'transfer' || phase === 'generating') ? 1 : 10 - (i * 2), 
-                                ease: "linear" 
-                            },
-                            scale: { repeat: Infinity, duration: 1 } 
-                        }}
-                    />
-                ))}
-                
-                {/* Central Prism */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div
-                        animate={(phase === 'transfer' || phase === 'generating') ? { 
-                            scale: [1, 1.5, 1],
-                            rotate: [45, 405], // Spin 360 (45 -> 405)
-                            backgroundColor: ["#000000", "#FFFFFF", "#000000"], // Flash White
-                            boxShadow: ["0 0 20px #BDFF00", "0 0 100px #FFFFFF", "0 0 50px #FF00FF"]
-                         } : { 
-                            scale: [1, 1.1, 1.05, 1],
-                            rotate: 45,
-                            backgroundColor: "#000000",
-                            boxShadow: ["0 0 20px #FFFFFF", "0 0 30px #BDFF00", "0 0 50px #FF00FF", "0 0 20px #FFFFFF"]
-                         }}
-                        transition={{ 
-                            duration: (phase === 'transfer' || phase === 'generating') ? 0.5 : 4,
-                            ease: (phase === 'transfer' || phase === 'generating') ? "easeInOut" : "linear",
-                            repeat: (phase === 'transfer' || phase === 'generating') ? 0 : Infinity,
-                        }}
-                        className="w-20 h-20 bg-black border border-white/20 backdrop-blur-md rounded-xl flex items-center justify-center rotate-45 relative overflow-hidden"
-                    >
-                         {/* Internal Swirl */}
-                        <motion.div 
-                             className={cn(
-                                 "absolute inset-[-50%] bg-gradient-to-t blur-xl transition-colors duration-500",
-                                 (phase === 'transfer' || phase === 'generating') ? "from-white via-acid-lime to-white" : "from-white/20 via-acid-lime/40 to-acid-magenta/40"
-                             )}
-                             animate={{ rotate: 360 }}
-                             transition={{ repeat: Infinity, duration: (phase === 'transfer' || phase === 'generating') ? 0.2 : 3, ease: "linear" }}
-                        />
-                        <Zap strokeWidth={1.5} className={cn(
-                            "w-8 h-8 -rotate-45 relative z-10 transition-colors duration-300",
-                            (phase === 'transfer' || phase === 'generating') ? "text-black fill-black" : "text-white fill-none"
-                        )} />
-                    </motion.div>
-                </div>
+             
+             {/* Flight Container Overlay */}
+             {phase === 'flight' && (
+                 <div className="absolute inset-0 flex items-center justify-center z-50">
+                     <div className="w-64 h-64 relative">
+                        {/* Swarm scatter logic is handled by Layout animations attempting to move from Grid to Editor, but we intercept here */}
+                        {/* Actually, if we want them to STOP in the middle, we render them here */}
+                        {SHARDS.map((shard, i) => (
+                             <motion.div 
+                                key={shard.id}
+                                className="absolute top-1/2 left-1/2"
+                                style={{
+                                    x: (Math.random() - 0.5) * 200,
+                                    y: (Math.random() - 0.5) * 200,
+                                }}
+                             >
+                                <DataShard id={shard.id} color={shard.color}  phase="flight" index={i} />
+                             </motion.div>
+                        ))}
+                     </div>
+                 </div>
+             )}
 
-                {/* Explosion Particles */}
-                {phase === 'transfer' && [...Array(12)].map((_, i) => (
-                    <motion.div
-                        key={`spark-${i}`}
-                        className="absolute left-1/2 top-1/2 w-1 h-1 bg-white rounded-full"
-                        initial={{ x: 0, y: 0, scale: 0 }}
-                        animate={{ 
-                            x: (Math.random() - 0.5) * 300, 
-                            y: (Math.random() - 0.5) * 300, 
-                            opacity: [1, 0],
-                            scale: [0, 2, 0]
-                        }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                    />
-                ))}
-            </div>
+             <AlchemyPrism hitType={phase === 'flight' ? 'visual' : null} />
             <p className="mt-8 text-zinc-500 font-mono text-sm tracking-widest uppercase flex items-center gap-2">
-                <RefreshCw strokeWidth={1.5} className={cn("w-3 h-3 animate-spin", (phase === 'transfer' || phase === 'generating') ? "text-white" : "text-acid-lime")} />
-                <span className={(phase === 'transfer' || phase === 'generating') ? "text-white font-bold" : "text-zinc-400"}>
-                    {(phase === 'transfer' || phase === 'generating') ? "ANALYZING..." : "Refactoring Logic..."}
+                <RefreshCw strokeWidth={1.5} className={cn("w-3 h-3 animate-spin", phase === 'flight' ? "text-white" : "text-acid-lime")} />
+                <span className={phase === 'flight' ? "text-white font-bold" : "text-zinc-400"}>
+                    {phase === 'flight' ? "DECONSTRUCTING..." : "Analyzing Pattern..."}
                 </span>
             </p>
           </div>
 
-          {/* PART 3: OUTPUT (Script Editor) */}
+          {/* 3. OUTPUT: Script Slate */}
           <div className="relative z-10 flex flex-col items-center">
-            <motion.div 
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-sm bg-[#0A0A0A] rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[400px]"
-            >
-                {/* Window Header */}
-                <div className="h-8 bg-white/5 border-b border-white/5 flex items-center px-3 gap-2">
-                    <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20" />
+            <ScriptSlate phase={phase}>
+                {phase === 'editor' && (
+                    <div className="w-full h-full flex flex-col gap-1 p-2">
+                        {SHARDS.map((shard, i) => (
+                             <DataShard key={shard.id} id={shard.id} color={shard.color} phase="editor" index={i} />
+                        ))}
                     </div>
-                    {/* Header Message */}
-                    <span className={cn(
-                        "ml-auto text-[10px] font-mono",
-                        (phase === 'generating' || phase === 'highlight') ? "text-acid-lime font-bold animate-pulse" : "text-zinc-600"
-                    )}>
-                        {(phase === 'generating' || phase === 'highlight') ? "Analyzing Hook..." : "waiting_for_input..."}
-                    </span>
-                </div>
-
-                {/* Editor Content */}
-                <div className="p-6 font-mono text-xs md:text-sm leading-relaxed text-zinc-400 font-light overflow-hidden relative">
-                    {/* Scanline */}
-                    <motion.div 
-                        className="absolute top-0 left-0 w-full h-1 bg-acid-lime/10 shadow-[0_0_10px_rgba(189,255,0,0.2)]"
-                        animate={{ top: ["0%", "100%"] }}
-                        transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                    />
-                    
-                    {(phase === 'generating' || phase === 'highlight') ? (
-                        <div className="space-y-4">
-                            {/* HOOK */}
-                            <motion.div 
-                                className="space-y-1"
-                                initial={false}
-                                animate={phase === 'highlight' ? { scale: 1.05 } : { scale: 1 }}
-                            >
-                                <span className="text-[10px] uppercase font-bold tracking-wider text-acid-lime">/// HOOK</span>
-                                <motion.div 
-                                    className={cn(
-                                        "pl-3 border-l-2 transition-all duration-300",
-                                        phase === 'highlight' ? "border-acid-lime bg-acid-lime/20 text-white p-2 rounded-r-md" : "border-acid-lime/50 text-white"
-                                    )}
-                                >
-                                    <TypewriterEffect 
-                                        text={`"Stop scrolling if you want to fix your engagement right now."`}
-                                        delay={0}
-                                        duration={1}
-                                        textColor="text-white"
-                                    />
-                                </motion.div>
-                            </motion.div>
-                            
-                            {/* BODY */}
-                            <motion.div 
-                                className="space-y-1"
-                                animate={{ opacity: phase === 'highlight' ? 0.5 : 1 }}
-                            >
-                                <span className="text-[10px] uppercase text-zinc-500 font-bold tracking-wider">/// BODY</span>
-                                <div className="text-zinc-300 border-l-2 border-white/10 pl-3">
-                                    <TypewriterEffect 
-                                        text={`Most creators fail because they ignore the first 3 seconds. Here is the exact framework used by the top 1%...`}
-                                        delay={1.2}
-                                        duration={1.5}
-                                        textColor="text-zinc-300"
-                                    />
-                                </div>
-                            </motion.div>
-
-                            {/* CTA */}
-                            <motion.div 
-                                className="space-y-1"
-                                initial={false}
-                                animate={phase === 'highlight' ? { scale: 1.05 } : { scale: 1 }}
-                            >
-                                 <span className="text-[10px] uppercase font-bold tracking-wider text-acid-magenta">/// CTA</span>
-                                 <motion.div 
-                                    className={cn(
-                                        "pl-3 border-l-2 transition-all duration-300",
-                                        phase === 'highlight' ? "border-acid-magenta bg-acid-magenta/20 text-white p-2 rounded-r-md" : "border-acid-magenta/50 text-white"
-                                    )}
-                                 >
-                                    <TypewriterEffect 
-                                        text={`"Check the Link in bio for the template."`}
-                                        delay={2.8}
-                                        duration={1}
-                                        textColor="text-white"
-                                    />
-                                    {phase === 'generating' && (
-                                        <span className="inline-block w-2 h-4 bg-acid-lime ml-1 align-middle animate-pulse" />
-                                    )}
-                                 </motion.div>
-                            </motion.div>
-                        </div>
-                    ) : (
-                        // Placeholder or Empty state during idle/transfer/processing
-                        <div className="flex items-center justify-center h-full opacity-20">
-                            <RefreshCw className="w-8 h-8 animate-spin text-zinc-600" strokeWidth={1.5} />
-                        </div>
-                    )}
-                </div>
-            </motion.div>
-            <p className="mt-6 text-zinc-500 font-mono text-sm tracking-widest uppercase">Output: Unique Script</p>
+                )}
+            </ScriptSlate>
+            <p className="mt-6 text-zinc-500 font-mono text-sm tracking-widest uppercase">Output: Generated Script</p>
           </div>
 
         </div>
+        </LayoutGroup>
       </motion.div>
+
+      {/* 4. Connected Platforms (Reacts to Extraction) */}
+      <PlatformMarquee isActive={phase === 'flight'} />
+
     </section>
   );
 }

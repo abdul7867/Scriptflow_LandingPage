@@ -27,10 +27,10 @@ export default function FoundersManifesto() {
                     I spent 3 years trying to grow on Instagram. I had the ideas, but my scripts were <span className="line-through decoration-acid-magenta decoration-2 text-zinc-400">boring</span>.
                 </p>
                 <p>
-                    I built ScriptFlow to fix my own problem. It's not just another AI wrapper—it's the tool I wished I had day one.
+                    I built ScriptFlow to fix my own problem. It&apos;s not just another AI wrapper—it&apos;s the tool I wished I had day one.
                 </p>
                 <p>
-                    I'm looking for <span className="bg-acid-lime/20 px-1 rounded-sm">100 creators</span> to help me refine it. No bots, just us building something great.
+                    I&apos;m looking for <span className="bg-acid-lime/20 px-1 rounded-sm">100 creators</span> to help me refine it. No bots, just us building something great.
                 </p>
             </div>
 

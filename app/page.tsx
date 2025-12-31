@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import PlatformMarquee from "@/components/PlatformMarquee";
+
 import Problem from "@/components/Problem";
 import ComparisonToggle from "@/components/ComparisonToggle";
 import LiveDemo from "@/components/LiveDemo";
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <Hero />
-      <PlatformMarquee />
+
       <Problem />
       <ComparisonToggle />
       <LiveDemo />
