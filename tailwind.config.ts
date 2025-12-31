@@ -24,6 +24,11 @@ const config: Config = {
         "acid-lime": "#BDFF00",
         "acid-magenta": "#FF00FF",
         "glass-border": "rgba(255, 255, 255, 0.08)",
+        "brand-black": "#030303",
+        "brand-glass": "#0A0A0A",
+        "brand-neon": "#00FF94",
+        "brand-neon-dim": "rgba(0, 255, 148, 0.1)",
+        "brand-border": "#1F1F1F",
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
@@ -34,6 +39,13 @@ const config: Config = {
       },
       backgroundImage: {
         "noise-pattern": "url('/noise.svg')",
+      },
+      boxShadow: {
+        "neon-glow": "0 0 20px -5px rgba(0, 255, 148, 0.5)",
+        "glass-inset": "inset 0 1px 1px rgba(255, 255, 255, 0.05)",
+      },
+      animation: {
+        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
     },
   },

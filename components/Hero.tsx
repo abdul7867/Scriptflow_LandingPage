@@ -1,16 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, Variants, LayoutGroup } from "framer-motion";
-import { ArrowRight, RefreshCw } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScarcity } from "@/lib/useScarcity";
-import { GhostReel } from "@/components/ui/GhostReel";
-import { AlchemyPrism } from "@/components/ui/AlchemyPrism";
-import { ScriptSlate } from "@/components/ui/ScriptSlate";
-import { DataShard } from "@/components/ui/DataShard";
-import PlatformMarquee from "@/components/PlatformMarquee";
+import HeroDirector from "@/components/HeroDirector";
 
+// --- Configuration ---
+// (Pixel Grid constants removed as they are no longer used)
+
+// --- Assets ---
+// "Viral Reel" Placeholder - Using a specific Unsplash image of a person talking/filming
+const REEL_IMAGE_URL = "url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop')";
 
 // Headline Variants
 const containerVariants: Variants = {
@@ -33,54 +35,21 @@ const wordVariants: Variants = {
   },
 };
 
-const SHARDS = Array.from({ length: 50 }, (_, i) => {
-  let color = "bg-green-500/50"; // Visuals (Middle)
-  if (i < 15) color = "bg-red-500/50"; // Hook (Top)
-  else if (i >= 35) color = "bg-blue-500/50"; // Audio (Bottom)
-  
-  return { id: i, color };
-});
-
-
-export default function Hero() {
+  export default function Hero() {
   const headlineWords = ["STOP", "GUESSING.", "START", "GOING", "VIRAL."];
   const { spots, isFlashing } = useScarcity();
   
-  // Master Timeline State
-  const [step, setStep] = useState(0);
-
-  // Phase Logic:
-  // 0s-2s: Phone (Intact)
-  // 2s-3.5s: Flight (Explosion to Center)
-  // 3.5s-6s: Editor (Reassembly)
-  const phase = step === 0 ? 'phone'
-              : step === 1 ? 'flight'
-              : step === 2 ? 'editor'
-              : 'phone';
-
-  // 6s Master Loop
-  useEffect(() => {
-    const loop = () => {
-      setStep(0); // 0s: Phone
-      setTimeout(() => setStep(1), 2000); // 2s: Flight
-      setTimeout(() => setStep(2), 3500); // 3.5s: Editor
-      setTimeout(() => setStep(0), 6000); // 6s: Reset
-    };
-
-    loop();
-    const interval = setInterval(loop, 6000);
-    return () => clearInterval(interval);
-  }, []);
-
+  // HeroDirector handles the animation state internally
+  
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-4 overflow-hidden">
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-4 overflow-hidden bg-black">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[10%] left-[10%] w-[600px] h-[600px] bg-acid-magenta/20 rounded-full blur-[120px] mix-blend-screen" />
         <div className="absolute bottom-[10%] right-[10%] w-[500px] h-[500px] bg-acid-lime/15 rounded-full blur-[120px] mix-blend-screen" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center text-center space-y-10 max-w-5xl mx-auto">
+      <div className="relative z-10 flex flex-col items-center text-center space-y-10 max-w-5xl mx-auto mb-20">
         {/* Scarcity Badge */}
         <motion.div
            initial={{ opacity: 0, y: 20 }}
@@ -155,85 +124,15 @@ export default function Hero() {
         </motion.button>
       </div>
 
-      {/* 3-Part Flow Container */}
+      {/* --- ANIMATION LAB (Phone -> Script) --- */}
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-        className="w-full max-w-6xl mt-24 relative z-10"
+         initial={{ opacity: 0, y: 50 }}
+         animate={{ opacity: 1, y: 0 }}
+         transition={{ duration: 0.8, delay: 1.2 }}
+         className="w-full max-w-7xl relative z-10 mt-10"
       >
-        <LayoutGroup>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative min-h-[500px]">
-          
-          {/* 1. INPUT: The Phone / Ghost Reel */}
-          <div className="relative z-10 flex flex-col items-center">
-            <GhostReel>
-                {/* Render Grid System inside Phone only if Phase is Phone */}
-                {phase === 'phone' && (
-                    <div className="w-full h-full grid grid-cols-5 gap-1">
-                        {SHARDS.map((shard, i) => (
-                             <DataShard key={shard.id} id={shard.id} color={shard.color}  phase="phone" index={i} />
-                        ))}
-                    </div>
-                )}
-            </GhostReel>
-            <p className="mt-6 text-zinc-500 font-mono text-sm tracking-widest uppercase">Input: Viral Reel</p>
-          </div>
-
-          {/* 2. PROCESS: Alchemy Prism / Flight Zone */}
-          <div className="relative z-10 flex flex-col items-center justify-center h-64 lg:h-auto">
-             
-             {/* Flight Container Overlay */}
-             {phase === 'flight' && (
-                 <div className="absolute inset-0 flex items-center justify-center z-50">
-                     <div className="w-64 h-64 relative">
-                        {/* Swarm scatter logic is handled by Layout animations attempting to move from Grid to Editor, but we intercept here */}
-                        {/* Actually, if we want them to STOP in the middle, we render them here */}
-                        {SHARDS.map((shard, i) => (
-                             <motion.div 
-                                key={shard.id}
-                                className="absolute top-1/2 left-1/2"
-                                style={{
-                                    x: (Math.random() - 0.5) * 200,
-                                    y: (Math.random() - 0.5) * 200,
-                                }}
-                             >
-                                <DataShard id={shard.id} color={shard.color}  phase="flight" index={i} />
-                             </motion.div>
-                        ))}
-                     </div>
-                 </div>
-             )}
-
-             <AlchemyPrism hitType={phase === 'flight' ? 'visual' : null} />
-            <p className="mt-8 text-zinc-500 font-mono text-sm tracking-widest uppercase flex items-center gap-2">
-                <RefreshCw strokeWidth={1.5} className={cn("w-3 h-3 animate-spin", phase === 'flight' ? "text-white" : "text-acid-lime")} />
-                <span className={phase === 'flight' ? "text-white font-bold" : "text-zinc-400"}>
-                    {phase === 'flight' ? "DECONSTRUCTING..." : "Analyzing Pattern..."}
-                </span>
-            </p>
-          </div>
-
-          {/* 3. OUTPUT: Script Slate */}
-          <div className="relative z-10 flex flex-col items-center">
-            <ScriptSlate phase={phase}>
-                {phase === 'editor' && (
-                    <div className="w-full h-full flex flex-col gap-1 p-2">
-                        {SHARDS.map((shard, i) => (
-                             <DataShard key={shard.id} id={shard.id} color={shard.color} phase="editor" index={i} />
-                        ))}
-                    </div>
-                )}
-            </ScriptSlate>
-            <p className="mt-6 text-zinc-500 font-mono text-sm tracking-widest uppercase">Output: Generated Script</p>
-          </div>
-
-        </div>
-        </LayoutGroup>
+        <HeroDirector />
       </motion.div>
-
-      {/* 4. Connected Platforms (Reacts to Extraction) */}
-      <PlatformMarquee isActive={phase === 'flight'} />
 
     </section>
   );

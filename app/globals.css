@@ -71,3 +71,12 @@ h1, h2, h3, h4, h5, h6 {
 .paused {
   animation-play-state: paused !important;
 }
+
+.bg-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background-image: url('/noise.svg');
+  opacity: 0.05;
+}

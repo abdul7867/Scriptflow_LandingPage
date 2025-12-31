@@ -7,7 +7,7 @@ interface TextScrambleProps {
   className?: string;
 }
 
-export const TextScramble = ({ text, duration = 1.5, className }: TextScrambleProps) => {
+export const TextScramble = ({ text, duration = 0.75, className }: TextScrambleProps) => {
   const [displayedText, setDisplayedText] = useState("");
   const chars = "!@#$%^&*()_+-=[]{}|;':,./<>?ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   

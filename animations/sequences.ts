@@ -1,0 +1,6 @@
+export const HERO_SEQUENCE = {
+    BEAM_DURATION: 1.2,
+    TERMINAL_PROCESS_TIME: 1.8, // 3 steps * 0.6
+    SUCCESS_REVEAL_DELAY: 0.5,
+    TOTAL_CYCLE: 4000
+};

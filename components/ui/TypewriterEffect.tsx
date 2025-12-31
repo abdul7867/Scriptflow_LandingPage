@@ -14,7 +14,7 @@ export const TypewriterEffect = ({
   text, 
   className = "", 
   delay = 0,
-  duration = 2,
+  duration = 0.5,
   textColor = "text-zinc-300"
 }: TypewriterEffectProps) => {
   const ref = useRef(null);

@@ -7,7 +7,7 @@ export default function Problem() {
     hidden: { y: "100%" },
     visible: { 
       y: 0, 
-      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } // Custom easing for premium feel
+      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
     }
   };
 
