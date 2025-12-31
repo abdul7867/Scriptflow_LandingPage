@@ -48,3 +48,26 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.04em; /* tracking-tighter */
   font-weight: 700;
 }
+
+@keyframes scroll-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes scan-move {
+  0% { top: 0%; opacity: 0.8; }
+  50% { top: 100%; opacity: 1; box-shadow: 0 0 20px #BDFF00; }
+  100% { top: 0%; opacity: 0.8; }
+}
+
+.animate-scroll-up {
+  animation: scroll-up 2s linear infinite;
+}
+
+.animate-scan {
+  animation: scan-move 3s ease-in-out infinite;
+}
+
+.paused {
+  animation-play-state: paused !important;
+}

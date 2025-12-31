@@ -1,71 +1,54 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import CountUp from "react-countup";
 import { cn } from "@/lib/utils";
 
 // Animated Counter Component
 function ViewsCounter() {
-    const count = useMotionValue(0);
-    const rounded = useTransform(count, (latest) => {
-        if (latest > 1000000) return (latest / 1000000).toFixed(1) + "M+";
-        if (latest > 1000) return Math.floor(latest / 1000) + "k";
-        return Math.floor(latest).toString().padStart(6, "0"); // Pad keeping 000,000 look mostly implied
-    });
-    
-    // We need a render-able state or direct motion value usage. 
-    // Framer motion values can be rendered directly in modern versions, but simple text requires a ref or state wrapper usually if strict string.
-    // However, simplest here is to just toggle logic on hover parent.
-    
     return (
-        <motion.div 
-            variants={{
-                idle: { color: "#a1a1aa" }, // zinc-400
-                hover: { color: "#bef202" } // acid-lime
-            }}
-            onHoverStart={() => {
-                animate(count, 1200000, { duration: 1.5, ease: "circOut" });
-            }}
-            onHoverEnd={() => {
-                count.set(0);
-            }}
-            className="font-mono text-xs tracking-widest font-bold"
-        >
-           VIEWS: <motion.span>{rounded}</motion.span>
-        </motion.div>
+        <div className="font-mono text-xs tracking-widest font-bold text-zinc-400 group-hover:text-acid-lime transition-colors duration-300">
+           VIEWS: <CountUp start={0} end={1200000} duration={2} separator="," formattingFn={(n: number) => n >= 1000000 ? (n/1000000).toFixed(1) + "M+" : n + ""} />
+        </div>
     );
 }
 
 // WaveformBar Component
+// WaveformBar Component
 const WaveformBar = ({ index }: { index: number }) => {
-    // Randomize "Active" scale for each bar slightly to look organic
-    const randomScale = 1.5 + Math.random(); 
+    // Chaos Mode Randoms
+    const r1 = Math.random() * 100 + "%";
+    const r2 = Math.random() * 100 + "%";
+    const r3 = Math.random() * 100 + "%";
+    
+    // Gradient Palette (Neon Lime, Magenta)
+    const activeColor = ["#bdff00", "#a3e635", "#d946ef", "#bdff00"]; 
 
     return (
         <motion.div
-            className="w-1.5 bg-zinc-600 rounded-full origin-bottom"
-            style={{ height: 20 }} // Base height
+            className="w-1 bg-zinc-700 rounded-full origin-bottom"
             variants={{
                 idle: { 
-                    scaleY: 0.5 + Math.random() * 0.5,
-                    backgroundColor: "#52525b", // zinc-600
+                    height: ["10%", "20%", "10%"],
+                    backgroundColor: "#3f3f46", // zinc-700
                     transition: {
-                        duration: 2,
+                        duration: 1.5,
                         repeat: Infinity,
-                        repeatType: "reverse",
-                        delay: index * 0.1
+                        delay: index * 0.1, // Sine wave flow
+                        ease: "easeInOut"
                     }
                 },
                 hover: { 
-                    scaleY: [1, randomScale, 1], // Pulse scale
-                    backgroundColor: "#bef202", // acid-lime
-                    boxShadow: "0 0 10px #bef202",
+                    height: ["10%", r1, r2, r3, "50%"], 
+                    backgroundColor: activeColor,
+                    boxShadow: ["0 0 0px #bdff00", "0 0 10px #bdff00"],
                     transition: {
-                        duration: 0.2, // Fast EDM tempo
+                        duration: 0.2, // Chaos Speed (4x normal)
                         repeat: Infinity,
-                        repeatType: "reverse",
-                        delay: index * 0.05,
-                        ease: "easeInOut"
+                        repeatType: "mirror",
+                        delay: Math.random() * 0.2, // Random start
+                        ease: "linear"
                     }
                 }
             }}
@@ -98,7 +81,7 @@ export default function FacelessCreator() {
                        C30,110 35,95 40,80 
                        C50,50 70,30 100,30 Z" 
                     fill="url(#hoodie-grad)"
-                    stroke="#bef202"
+                    stroke="#bdff00"
                     strokeWidth="2"
                     variants={{
                         idle: { pathLength: 0, opacity: 0.8 },
@@ -112,8 +95,9 @@ export default function FacelessCreator() {
             </svg>
 
             {/* The Brain / Waveform (Absolute Positioned inside the Face) */}
-            <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[70px] h-[40px] flex items-center justify-center gap-[2px] overflow-hidden">
-                {[...Array(9)].map((_, i) => (
+            {/* The Reactive Waveform (20 Bars) */}
+            <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[70px] h-[40px] flex items-end justify-center gap-[1px] overflow-hidden">
+                {[...Array(20)].map((_, i) => (
                     <WaveformBar key={i} index={i} />
                 ))}
             </div>

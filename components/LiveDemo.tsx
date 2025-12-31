@@ -12,30 +12,19 @@ const LOADING_PHASES = [
 ];
 
 export default function LiveDemo() {
-  const [step, setStep] = useState<"input" | "loading" | "result">("input");
-  const [loadingPhase, setLoadingPhase] = useState(0);
+  const [step, setStep] = useState<"input" | "matrix" | "result">("input");
   const [copied, setCopied] = useState(false);
   const [inputText, setInputText] = useState("");
+  const [isHoveringButton, setIsHoveringButton] = useState(false);
 
   const handleAnalyze = () => {
     if (!inputText) return;
-    setStep("loading");
-    setLoadingPhase(0);
+    setStep("matrix");
 
-    // Cycle through loading phases
-    let phase = 0;
-    const interval = setInterval(() => {
-      phase++;
-      if (phase < LOADING_PHASES.length) {
-        setLoadingPhase(phase);
-      }
-    }, 1500);
-
-    // Finish after all phases
+    // 1.5s Decrypt/Matrix Effect then show result
     setTimeout(() => {
-      clearInterval(interval);
       setStep("result");
-    }, 4500);
+    }, 1500);
   };
 
   const handleCopy = () => {
@@ -70,14 +59,17 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
 
         {/* The Machine Interface */}
         <div className="relative">
-            <div className="rounded-2xl border border-white/10 bg-[#0A0A0A] overflow-hidden shadow-2xl relative min-h-[400px] flex flex-col">
+            <div className="rounded-2xl border border-zinc-800 bg-[#0A0A0A] overflow-hidden shadow-2xl relative min-h-[400px] flex flex-col font-mono">
                 
                 {/* Window Controls (Decorative) */}
-                <div className="h-10 bg-white/5 border-b border-white/5 flex items-center px-4 gap-2">
+                <div className="h-10 bg-zinc-900 border-b border-zinc-800 flex items-center px-4 gap-2">
                     <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-red-500/20" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
-                        <div className="w-3 h-3 rounded-full bg-green-500/20" />
+                        <div className="w-3 h-3 rounded-full bg-zinc-600" />
+                        <div className="w-3 h-3 rounded-full bg-zinc-600" />
+                        <div className="w-3 h-3 rounded-full bg-zinc-600" />
+                    </div>
+                    <div className="ml-auto text-[10px] text-zinc-500 font-mono tracking-widest uppercase">
+                        TERMINAL_V2.0
                     </div>
                 </div>
 
@@ -85,57 +77,66 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
                 <div className="flex-1 p-8 flex flex-col items-center justify-center relative">
                     <AnimatePresence mode="wait">
                         
-                        {/* STEP 1: INPUT */}
+                        {/* STEP 1: INPUT (Terminal Redesign) */}
                         {step === "input" && (
                             <motion.div 
                                 key="input"
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
-                                className="w-full max-w-3xl flex flex-col gap-10"
+                                className="w-full max-w-2xl"
                             >
-                                <div className="relative group w-full">
-                                     <div className="relative w-full flex items-center">
-                                        <div className="absolute left-0 top-0 bottom-0 flex items-center pl-2 pointer-events-none">
-                                            <span className="text-zinc-700 text-3xl md:text-4xl font-heading font-bold animate-pulse">
-                                                {inputText ? "" : ">"}
-                                            </span>
-                                        </div>
-                                        <input 
-                                            type="text" 
-                                            value={inputText}
-                                            onChange={(e) => setInputText(e.target.value)}
-                                            placeholder="Paste Reel Link..." 
-                                            className="w-full h-24 pl-10 pr-40 md:pr-48 bg-transparent border-b-4 border-zinc-800 focus:border-acid-lime text-3xl md:text-5xl text-white placeholder-zinc-800 transition-colors font-heading font-bold focus:outline-none"
-                                        />
+                                <div className="bg-[#050505] p-6 border-l-4 border-acid-lime relative shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                                    
+                                    {/* Terminal Structure */}
+                                    <div className="flex flex-col gap-4">
                                         
-                                        <div className="absolute right-0 top-1/2 -translate-y-1/2 pr-2">
+                                        {/* Input Line */}
+                                        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-0 font-mono text-sm md:text-base">
+                                            <span className="text-acid-lime shrink-0">
+                                                {"> root/users/guest/analyze: "}
+                                            </span>
+                                            <input 
+                                                type="text" 
+                                                value={inputText}
+                                                onChange={(e) => setInputText(e.target.value)}
+                                                placeholder="_Paste_Reel_Link_" 
+                                                className="w-full bg-transparent border-none focus:ring-0 text-white placeholder-zinc-700 outline-none pl-2 caret-acid-lime"
+                                                autoFocus
+                                            />
+                                        </div>
+
+                                        {/* Action Line */}
+                                        <div className="flex justify-end mt-4">
                                             <button 
                                                 onClick={handleAnalyze}
+                                                onMouseEnter={() => setIsHoveringButton(true)}
+                                                onMouseLeave={() => setIsHoveringButton(false)}
                                                 disabled={!inputText}
                                                 className={cn(
-                                                    "h-16 px-8 font-black font-heading uppercase tracking-widest text-lg transition-all flex items-center justify-center gap-2 relative overflow-hidden clip-path-slant disabled:opacity-50",
-                                                    inputText 
-                                                        ? "bg-acid-lime text-black hover:scale-105 hover:shadow-[0_0_20px_rgba(189,255,0,0.5)]" 
-                                                        : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
+                                                    "border border-acid-lime px-6 py-2 text-sm font-bold tracking-widest transition-all duration-200",
+                                                    isHoveringButton 
+                                                        ? "bg-acid-lime text-black" 
+                                                        : "text-acid-lime bg-transparent"
                                                 )}
-                                                style={{ clipPath: "polygon(10% 0, 100% 0, 100% 100%, 0% 100%)" }}
                                             >
-                                                <span className="relative z-10">ANALYZE</span>
-                                                {inputText && <Zap className="w-5 h-5 relative z-10 fill-black" />}
+                                                [ EXECUTE ]
                                             </button>
                                         </div>
-                                     </div>
+
+                                    </div>
+                                    
+                                    {/* Blink Cursor Decor (Optional, CSS handles input caret well usually, but we can add a trailing block if desired) */}
                                 </div>
-                                
+
                                 {/* Examples */}
-                                <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                                    <span className="text-zinc-500 font-mono text-sm self-center">Try:</span>
+                                <div className="mt-8 flex flex-wrap gap-4 justify-center">
+                                    <span className="text-zinc-600 font-mono text-xs self-center">test_params:</span>
                                     {["instagram.com/reel/C3...", "tiktok.com/@alexhormozi/..."].map((ex, i) => (
                                         <button 
                                             key={i}
                                             onClick={() => setInputText(ex)}
-                                            className="px-3 py-1.5 rounded-md bg-white/5 border border-white/5 text-xs text-zinc-400 font-mono hover:bg-white/10 hover:text-white transition-colors"
+                                            className="text-xs text-zinc-500 font-mono hover:text-acid-lime transition-colors border-b border-transparent hover:border-acid-lime"
                                         >
                                             {ex}
                                         </button>
@@ -144,52 +145,19 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
                             </motion.div>
                         )}
 
-                        {/* STEP 2: LOADING */}
-                        {step === "loading" && (
+                        {/* STEP 2: MATRIX RAIN (Decrypt) */}
+                        {step === "matrix" && (
                             <motion.div 
-                                key="loading"
+                                key="matrix"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="flex flex-col items-center gap-8"
+                                className="w-full max-w-2xl h-64 bg-black font-mono text-acid-lime p-4 overflow-hidden relative border border-acid-lime/20"
                             >
-                                <div className="relative w-32 h-32 flex items-center justify-center">
-                                    <div className="absolute inset-0 rounded-full border-4 border-white/5" />
-                                    <motion.div 
-                                        className="absolute inset-0 rounded-full border-4 border-transparent border-t-acid-lime"
-                                        animate={{ rotate: 360 }}
-                                        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                                    />
-                                    <div className="absolute inset-0 rounded-full shadow-[0_0_40px_rgba(189,255,0,0.2)] animate-pulse" />
-                                    <Zap className="w-10 h-10 text-acid-lime" />
-                                </div>
-
-                                <div className="flex flex-col items-center gap-2 h-16">
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key={loadingPhase}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            className="flex items-center gap-3 text-xl font-mono text-zinc-300"
-                                        >
-                                            {(() => {
-                                                const Icon = LOADING_PHASES[loadingPhase].icon;
-                                                return <Icon className="w-5 h-5 text-acid-magenta" />;
-                                            })()}
-                                            {LOADING_PHASES[loadingPhase].text}
-                                        </motion.div>
-                                    </AnimatePresence>
-                                </div>
-
-                                {/* Progress Bar */}
-                                <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
-                                    <motion.div 
-                                        className="h-full bg-gradient-to-r from-acid-lime to-acid-magenta"
-                                        initial={{ width: "0%" }}
-                                        animate={{ width: "100%" }}
-                                        transition={{ duration: 4.5, ease: "easeInOut" }}
-                                    />
+                                <MatrixRain />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none" />
+                                <div className="absolute bottom-4 left-4 bg-acid-lime/10 px-2 py-1 text-xs border border-acid-lime/20 animate-pulse">
+                                    DECRYPTING_SOURCE...
                                 </div>
                             </motion.div>
                         )}
@@ -202,7 +170,7 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
                                 animate={{ opacity: 1 }}
                                 className="w-full max-w-3xl flex flex-col items-start gap-6 font-mono"
                             >
-                                <div className="w-full bg-zinc-900/50 border border-white/5 rounded-xl p-6 md:p-8 space-y-8 relative overflow-hidden">
+                                <div className="w-full bg-zinc-900/50 border border-white/5 rounded-none border-l-2 border-l-white p-6 md:p-8 space-y-8 relative overflow-hidden backdrop-blur-sm">
                                      {/* Scanline Effect */}
                                     <div className="absolute top-0 left-0 w-full h-1 bg-acid-lime/10 animate-[scan_3s_linear_infinite]" />
 
@@ -244,25 +212,15 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
                                 <div className="flex gap-4 w-full">
                                     <button 
                                         onClick={handleCopy}
-                                        className="flex-1 h-14 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                                        className="h-12 px-6 bg-acid-lime text-black font-bold uppercase tracking-widest text-sm hover:bg-[#a6e000] transition-colors flex items-center gap-2"
                                     >
-                                        {copied ? (
-                                            <>
-                                                <Check className="w-5 h-5 text-green-500" />
-                                                <span className="text-green-500">COPIED!</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Clipboard className="w-5 h-5" />
-                                                COPY SCRIPT
-                                            </>
-                                        )}
+                                        {copied ? "COPIED" : "COPY_SOURCE"}
                                     </button>
                                     <button 
                                         onClick={() => { setStep("input"); setInputText(""); }}
-                                        className="px-6 h-14 text-zinc-500 hover:text-white font-medium transition-colors"
+                                        className="h-12 px-6 border border-zinc-700 text-zinc-400 font-bold uppercase tracking-widest text-sm hover:text-white hover:border-white transition-colors"
                                     >
-                                        Try Another
+                                        RESET_TERMINAL
                                     </button>
                                 </div>
                             </motion.div>
@@ -275,4 +233,30 @@ CTA: "Comment 'SCRIPT' and I'll send you the template instantly."`;
       </div>
     </section>
   );
+}
+
+// Simple Matrix Rain Component
+function MatrixRain() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$%^&*";
+    const [drops, setDrops] = useState<string[]>([]);
+    
+    // Initialize drops
+    useEffect(() => {
+        // Just random strings to simulate the rain for this short duration
+        const interval = setInterval(() => {
+             setDrops(prev => {
+                 const newLine = Array(20).fill(0).map(() => letters[Math.floor(Math.random() * letters.length)]).join(" ");
+                 return [newLine, ...prev.slice(0, 15)];
+             });
+        }, 50);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="w-full h-full text-xs leading-4 opacity-70 break-all select-none flex flex-col items-center justify-center text-center mask-image-fade">
+            {drops.map((line, i) => (
+                <div key={i} style={{ opacity: 1 - (i * 0.05) }} className="w-full">{line}</div>
+            ))}
+        </div>
+    );
 }

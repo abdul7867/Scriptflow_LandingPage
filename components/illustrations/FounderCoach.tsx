@@ -1,169 +1,180 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { User } from "lucide-react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { User, Crown } from "lucide-react";
+import { useRef } from "react";
 
-// Audience Member Component
-const AudienceMember = ({ row, index, totalInRow }: { row: number, index: number, totalInRow: number }) => {
-    // Calculate delay based on row (distance from mic)
-    const delay = row * 0.15 + (index * 0.02); // Slight stagger within row too
-    
-    // Arc offset calculation (simple approximation)
-    // We want rows to curve slightly.
-    // Center element (index ~ equal to half total) is highest.
-    // Elements at edges are lower.
-    const midPoint = (totalInRow - 1) / 2;
-    const distFromCenter = Math.abs(index - midPoint);
-    const yOffset = distFromCenter * 4; // Curve down at edges
+// Gravity Dot Component
+const GravityDot = ({ 
+    cx, 
+    cy, 
+    mouseX, 
+    mouseY 
+}: { 
+    cx: number, 
+    cy: number, 
+    mouseX: any, 
+    mouseY: any 
+}) => {
+    // Physical Pull Calculation
+    const x = useTransform([mouseX, mouseY], ([mx, my]) => {
+        if (typeof mx !== 'number' || typeof my !== 'number') return 0;
+        const dx = mx - cx;
+        const dy = my - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        // Physics: Magnetism
+        const maxDist = 150; // Range of influence
+        if (dist > maxDist) return 0; 
+        
+        // Stronger pull when closer
+        const pull = Math.pow((1 - dist / maxDist), 2) * 40; // Max 40px pull
+        return (dx / dist) * pull;
+    });
+
+    const y = useTransform([mouseX, mouseY], ([mx, my]) => {
+        if (typeof mx !== 'number' || typeof my !== 'number') return 0;
+        const dx = mx - cx;
+        const dy = my - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > 150) return 0;
+        const pull = Math.pow((1 - dist / 150), 2) * 40;
+        return (dy / dist) * pull;
+    });
+
+    // Color/Glow Reaction
+    const color = useTransform([mouseX, mouseY], ([mx, my]) => {
+        if (typeof mx !== 'number' || typeof my !== 'number') return "rgba(82, 82, 91, 0.3)"; // zinc-600 @ 30%
+        const dx = mx - cx;
+        const dy = my - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        // Threshold for "Activation"
+        return dist < 100 ? "#d946ef" : "rgba(82, 82, 91, 0.3)"; // acid-magenta vs dim grey
+    });
+
+    const scale = useTransform([mouseX, mouseY], ([mx, my]) => {
+        if (typeof mx !== 'number' || typeof my !== 'number') return 1;
+        const dx = mx - cx;
+        const dy = my - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        return dist < 100 ? 1.5 : 1;
+    });
+
+    // Smooth out the movement
+    const smoothX = useSpring(x, { stiffness: 150, damping: 15 });
+    const smoothY = useSpring(y, { stiffness: 150, damping: 15 });
 
     return (
         <motion.div
+            className="absolute rounded-full flex items-center justify-center bg-zinc-900 border border-white/5"
             style={{ 
-                y: yOffset, // Static arc positioning
+                left: cx - 12, // Center the 24px dot
+                top: cy - 12,
+                x: smoothX, 
+                y: smoothY,
+                width: 24,
+                height: 24,
+                scale
             }}
-            variants={{
-                idle: { 
-                    scale: 0.8, 
-                    color: "#52525b", // zinc-600
-                    textShadow: "0px 0px 0px transparent",
-                    y: yOffset // Reset pos
-                },
-                hover: { 
-                    scale: 1.1, 
-                    color: "#f0abfc", // A light purple/white mix
-                    textShadow: "0px 0px 8px #d946ef", // magenta-500 glow
-                    y: yOffset - 10, // Pop up
-                    transition: {
-                        delay: delay,
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 15
-                    }
-                }
-            }}
-            className="relative"
         >
-            <div className="p-1.5 rounded-full bg-zinc-900/50 backdrop-blur-sm border border-white/5">
-                <User className="w-4 h-4" fill="currentColor" />
-            </div>
-            
-            {/* Active Notification Indicator */}
-            <motion.div 
-                variants={{
-                    idle: { scale: 0, opacity: 0 },
-                    hover: { 
-                        scale: 1, 
-                        opacity: 1,
-                        transition: { delay: delay + 0.1, duration: 0.2 }
-                    }
-                }}
-                className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white shadow-[0_0_5px_white]"
-            />
+            <motion.div style={{ color }}>
+                <User strokeWidth={1.5} className="w-3 h-3" />
+            </motion.div>
         </motion.div>
     );
 };
 
 export default function FounderCoach() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseX = useMotionValue(9999); // Off-screen initially
+  const mouseY = useMotionValue(9999);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(9999);
+    mouseY.set(9999); // Release magnets
+  };
+
+  // Generate Grid of 20 dots (5 cols x 4 rows)
+  const cols = 5;
+  const rows = 4;
+  const width = 300; // Estimated container width availability
+  const height = 240;
+  
+  const dots = [];
+  const xGap = width / (cols + 1);
+  const yGap = height / (rows + 1);
+
+  for (let r = 1; r <= rows; r++) {
+    for (let c = 1; c <= cols; c++) {
+        dots.push({ x: c * xGap, y: r * yGap });
+    }
+  }
+
   return (
-    <div className="w-full h-full flex flex-col items-center justify-end pb-0 relative overflow-visible">
-        
-        {/* Signal Rings (Behind Mic) */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-full h-full flex items-end justify-center pointer-events-none overflow-hidden">
-             {[...Array(3)].map((_, i) => (
-                <motion.div
-                    key={i}
-                    className="absolute bottom-[-50px] w-[100px] h-[100px] rounded-full border border-acid-magenta/30"
-                    
-                    variants={{
-                        idle: { 
-                            scale: 1,
-                            opacity: 0 
-                        },
-                        hover: {
-                            scale: [1, 6],
-                            opacity: [0.8, 0],
-                            borderWidth: ["2px", "0px"],
-                            transition: {
-                                duration: 1.5,
-                                repeat: Infinity,
-                                ease: "easeOut",
-                                delay: i * 0.4
-                            }
-                        }
-                    }}
-                />
+    <div 
+        ref={containerRef}
+        className="w-full h-full relative overflow-hidden group flex items-center justify-center cursor-crosshair"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+    >
+        {/* The Grid of Gravity Dots */}
+        <div className="relative w-[300px] h-[240px]">
+             {dots.map((dot, i) => (
+                 <GravityDot 
+                    key={i} 
+                    cx={dot.x} 
+                    cy={dot.y} 
+                    mouseX={mouseX} 
+                    mouseY={mouseY} 
+                 />
              ))}
-        </div>
 
-        {/* Audience Grid - 3 Rows in an "Arc" structure */}
-        {/* We stack them absolute or flex to control layers easily */}
-        <div className="mb-16 flex flex-col items-center gap-3 z-10 w-full px-8">
-            
-            {/* Row 3 (Furthest/Top) - 7 Users */}
-            <div className="flex justify-center gap-4">
-                {[...Array(7)].map((_, i) => (
-                    <AudienceMember key={`r3-${i}`} row={3} index={i} totalInRow={7} />
-                ))}
-            </div>
-
-            {/* Row 2 (Middle) - 5 Users */}
-            <div className="flex justify-center gap-6">
-                {[...Array(5)].map((_, i) => (
-                    <AudienceMember key={`r2-${i}`} row={2} index={i} totalInRow={5} />
-                ))}
-            </div>
-
-            {/* Row 1 (Closest/Bottom) - 3 Users */}
-            <div className="flex justify-center gap-8">
-                {[...Array(3)].map((_, i) => (
-                    <AudienceMember key={`r1-${i}`} row={1} index={i} totalInRow={3} />
-                ))}
-            </div>
-        </div>
-
-        {/* Microphone (Source) */}
-        <div className="absolute bottom-0 z-20">
-            <motion.div 
-                className="relative"
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            {/* The Founder Icon (Magnet Center) - follows cursor or static? 
+                Request says: "Center a larger 'Founder Icon' (The Magnet)". 
+                It also says "Track mouse... If mouse is close to a dot, move dot towards mouse".
+                This implies the MOUSE is the magnet. The Founder Icon visually represents the user/magnet?
+                Or is the Founder Icon static in center, and dots attracted to it?
+                "As you move your mouse... audience swarms or follows YOUR cursor."
+                So Mouse = Magnet.
+                The "Center a larger 'Founder Icon'" might just be decor or the "Avatar".
+                Actually, usually "Founder" archetype implies YOU are the founder. 
+                Let's make the "Founder Icon" follow the mouse? 
+                "Center a larger Founder Icon" - "Center" usually implies static placement.
+                But "The Magnet" title suggests it is the force.
+                If I move mouse, and dots follow mouse, and Founder Icon is the magnet... Founder Icon should probably track mouse too, acting as the cursor.
+            */}
+            <motion.div
+                className="absolute pointer-events-none z-30"
+                style={{ 
+                    x: mouseX, 
+                    y: mouseY,
+                    translateX: "-50%",
+                    translateY: "-50%"
+                }}
             >
-                {/* Glow Backdrop */}
-                <motion.div 
-                    className="absolute inset-0 bg-acid-magenta/40 blur-xl rounded-full"
-                    variants={{
-                        idle: { opacity: 0.4, scale: 0.8 },
-                        hover: { 
-                            opacity: [0.6, 1, 0.6], 
-                            scale: [1, 1.2, 1],
-                            transition: { duration: 0.5, repeat: Infinity } 
-                        }
-                    }}
-                />
-
-                {/* Mic Shape */}
-                <svg width="60" height="100" viewBox="0 0 60 100" fill="none" className="drop-shadow-2xl">
-                    {/* Stand */}
-                    <path d="M30 70 V 100" stroke="#52525b" strokeWidth="4" />
-                    <path d="M15 100 H 45" stroke="#52525b" strokeWidth="4" strokeLinecap="round" />
-                    
-                    {/* Body */}
-                    <rect x="15" y="10" width="30" height="50" rx="15" fill="#18181b" stroke="#d946ef" strokeWidth="2" />
-                    <path d="M20 20 H 40" stroke="#d946ef" strokeWidth="1" strokeOpacity="0.5" />
-                    <path d="M20 30 H 40" stroke="#d946ef" strokeWidth="1" strokeOpacity="0.5" />
-                    <path d="M20 40 H 40" stroke="#d946ef" strokeWidth="1" strokeOpacity="0.5" />
-                    
-                    {/* Active Light */}
-                    <motion.circle 
-                        cx="30" cy="50" r="3" 
-                        fill="#d946ef"
-                        variants={{
-                            idle: { opacity: 0.5 },
-                            hover: { opacity: 1, boxShadow: "0 0 10px #d946ef" }
-                        }}
-                    />
-                </svg>
+                {/* Visual Representation of the "Founder Magnet" */}
+                {/* Only visible when interacting? Or always? Prompt says "Center a larger..." implied static layout usually, but physics implies mouse.
+                    Let's try: A static faint "throne" in center, but the 'Active Founder' is the cursor using the "Crown" icon.
+                */}
+                 <div className="w-16 h-16 rounded-full bg-acid-magenta/10 border border-acid-magenta/50 blur-sm absolute inset-0 animate-pulse" />
+                 <div className="relative flex items-center justify-center w-12 h-12 bg-black border border-acid-magenta rounded-full shadow-[0_0_30px_#d946ef]">
+                    <Crown className="w-6 h-6 text-acid-magenta" strokeWidth={1.5} />
+                 </div>
             </motion.div>
+        
+        </div>
+        
+        {/* Hint */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[10px] text-zinc-600 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+            BUILD_YOUR_TRIBE
         </div>
 
     </div>

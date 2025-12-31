@@ -1,110 +1,103 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Settings, Check } from "lucide-react";
+import { FileText } from "lucide-react";
 
 export default function TheCurator() {
   return (
-    <div className="w-full h-full flex items-center justify-around px-4 relative overflow-visible">
+    <div className="w-full h-full flex flex-col items-center justify-center relative">
+        
+        {/* The Stack Container */}
+        <div className="relative w-32 h-40">
+            
+            {/* Bottom Card */}
+            <motion.div
+                className="absolute inset-0 bg-zinc-800 border-2 border-zinc-700 rounded-lg shadow-xl"
+                style={{ rotate: -5, y: 10, scale: 0.9 }}
+                variants={{
+                    idle: { y: 10, rotate: -5, borderColor: "#3f3f46" }, // zinc-700
+                    hover: { 
+                        y: 0, 
+                        rotate: -2, 
+                        borderColor: "#bdff00", // Neon Lime
+                        backgroundColor: "#1a2e05", // Very dark lime
+                        transition: { duration: 0.3 } 
+                    }
+                }}
+            />
 
-      {/* LEFT: Messy Input Stack */}
-      <div className="relative w-12 h-16 flex flex-col justify-end gap-1">
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={i}
-            className={`w-8 h-8 rounded-md border border-white/10 shadow-sm
-              ${i === 0 ? "bg-blue-500/80 -rotate-12 translate-x-2" : 
-                i === 1 ? "bg-purple-500/80 rotate-6 -translate-x-1" : 
-                "bg-zinc-500/80 rotate-3"
-              }`}
-            variants={{
-              idle: { x: 0, opacity: 1, scale: 1 },
-              hover: { 
-                x: [0, 60], // Move to center
-                y: [0, 10], // Slight funnel down
-                scale: [1, 0], // Shrink into machine
-                opacity: [1, 0],
-                transition: {
-                   duration: 2,
-                   repeat: Infinity,
-                   delay: i * 0.1, // Stagger slightly so they don't look like one block
-                   times: [0, 0.4] 
-                }
-              }
-            }}
-          />
-        ))}
-      </div>
+            {/* Middle Card */}
+            <motion.div
+                className="absolute inset-0 bg-zinc-800 border-2 border-zinc-600 rounded-lg shadow-xl flex items-center justify-center"
+                style={{ rotate: 5, y: 5, scale: 0.95 }}
+                variants={{
+                    idle: { y: 5, rotate: 5, borderColor: "#52525b" }, // zinc-600
+                    hover: { 
+                        y: 0, 
+                        rotate: 2, 
+                        borderColor: "#bdff00",
+                        backgroundColor: "#1a2e05", 
+                        transition: { duration: 0.3, delay: 0.05 } 
+                    }
+                }}
+            >
+               {/* Lines representing text */}
+               <div className="w-16 space-y-2 opacity-20">
+                    <div className="h-1 bg-white rounded-full w-full" />
+                    <div className="h-1 bg-white rounded-full w-2/3" />
+               </div>
+            </motion.div>
 
-      {/* CENTER: The Machine */}
-      <div className="relative z-10 flex flex-col items-center">
-        {/* Hydraulic Press Head */}
+            {/* Top Card (Active) */}
+            <motion.div
+                className="absolute inset-0 bg-zinc-900 border-2 border-zinc-500 rounded-lg shadow-2xl flex flex-col items-center justify-center gap-2"
+                style={{ rotate: 0, y: 0 }}
+                animate={{ y: [0, -8, 0] }} // Float animation
+                transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                }}
+                variants={{
+                    idle: { 
+                        y: 0, 
+                        borderColor: "#71717a", // zinc-500
+                        boxShadow: "0 10px 30px -10px rgba(0,0,0,0.5)"
+                    }, 
+                    hover: { 
+                        y: 0, // Compress down
+                        rotate: 0,
+                        borderColor: "#bdff00",
+                        boxShadow: "0 0 20px rgba(189, 255, 0, 0.3)",
+                        backgroundColor: "#000000",
+                        transition: { duration: 0.3, delay: 0.1 } 
+                    }
+                }}
+            >
+                <FileText className="w-8 h-8 text-zinc-400" strokeWidth={1.5} />
+                <div className="w-12 h-1 bg-zinc-700 rounded-full overflow-hidden">
+                    <motion.div 
+                        className="h-full bg-[#bdff00]" 
+                        variants={{
+                            idle: { width: "30%" },
+                            hover: { width: "100%", transition: { duration: 0.4 } }
+                        }}
+                    />
+                </div>
+            </motion.div>
+
+        </div>
+
+        {/* Caption */}
         <motion.div 
-            className="w-16 h-20 bg-zinc-800 rounded-lg border border-white/20 flex flex-col items-center justify-end pb-2 overflow-hidden relative"
+            className="absolute bottom-4 font-mono text-[10px] text-[#bdff00] bg-[#bdff00]/10 px-2 py-0.5 rounded border border-[#bdff00]/20"
             variants={{
-                idle: { y: 0 },
-                hover: { 
-                    y: [0, 4, 0], // Shake/Press
-                    borderColor: ["rgba(255,255,255,0.2)", "#bef202", "rgba(255,255,255,0.2)"],
-                    transition: { duration: 2, times: [0.4, 0.5, 0.6], repeat: Infinity }
-                }
+                idle: { opacity: 0, y: 5 },
+                hover: { opacity: 1, y: 0 }
             }}
         >
-             {/* Internal Glow */}
-             <motion.div 
-                className="absolute inset-0 bg-acid-lime/20 blur-md"
-                variants={{
-                    idle: { opacity: 0 },
-                    hover: { opacity: [0, 1, 0], transition: { duration: 2, times: [0.4, 0.5, 0.6], repeat: Infinity } }
-                }}
-             />
-
-             {/* Gears */}
-             <div className="flex gap-1 mb-2">
-                 <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                 >
-                     <Settings className="w-6 h-6 text-zinc-500" />
-                 </motion.div>
-                 <motion.div
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                 >
-                     <Settings className="w-5 h-5 text-zinc-600 mt-2" />
-                 </motion.div>
-             </div>
+            BATCH_READY
         </motion.div>
-        
-        {/* Base Platform */}
-        <div className="w-20 h-2 bg-zinc-700 rounded-full mt-1" />
-      </div>
-
-      {/* RIGHT: Clean Output */}
-      <div className="relative w-16 h-16 flex items-center">
-          <motion.div
-             className="w-12 h-12 bg-[#bef202] rounded-lg border-2 border-white shadow-[0_0_20px_#bef202] flex items-center justify-center"
-             variants={{
-                idle: { x: -40, opacity: 0, scale: 0 },
-                hover: {
-                    x: [-40, 20], // Shoot out from center
-                    opacity: [0, 1, 1, 0], // Fade in then reset
-                    scale: [0.5, 1, 1, 0.5],
-                    transition: {
-                        duration: 2,
-                        repeat: Infinity,
-                        times: [0.55, 0.7, 0.85, 1], // Appear after press
-                        ease: "circOut"
-                    }
-                }
-             }}
-          >
-              <Check className="w-8 h-8 text-black stroke-[3px]" />
-          </motion.div>
-      </div>
-
-      {/* Connecting Path Line (Visual Aid) */}
-      <div className="absolute top-[60%] left-[20%] right-[20%] h-[2px] bg-white/5 -z-10" />
 
     </div>
   );

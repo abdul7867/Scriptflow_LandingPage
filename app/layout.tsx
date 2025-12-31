@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Instrument_Serif } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
+import GlobalSpotlight from "@/components/ui/GlobalSpotlight";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({ 
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${GeistSans.variable} ${spaceGrotesk.variable} ${instrumentSerif.variable} antialiased bg-canvas text-white relative`}>
+        <GlobalSpotlight />
         {/* Ambient Spotlights */}
         <div className="fixed top-0 left-0 w-[800px] h-[800px] bg-indigo-900/20 rounded-full blur-[150px] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0" />
         <div className="fixed bottom-0 right-0 w-[800px] h-[800px] bg-orange-900/15 rounded-full blur-[150px] translate-x-1/3 translate-y-1/3 pointer-events-none z-0" />

@@ -38,36 +38,37 @@ export default function ArchetypeCard({
       }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={cn(
-        "group relative h-[450px] w-full rounded-[32px] overflow-hidden backdrop-blur-[40px] bg-opacity-80 transition-all duration-300",
-        // Background: Deep Black with opacity
-        "bg-[#050505]",
+        "group relative h-[450px] w-full rounded-[32px] overflow-hidden transition-all duration-300",
+        "bg-black/40 backdrop-blur-xl border border-white/10",
         className
       )}
     >
         {/* Noise Texture Overlay */}
         <div className="absolute inset-0 z-0 opacity-[0.05] pointer-events-none bg-[url('/noise.svg')] bg-repeat mix-blend-overlay" />
 
-        {/* 1px Inner Glowing Rim (Gradient Border) - Base State */}
-        <div 
-            className="absolute inset-0 rounded-[32px] z-20 pointer-events-none opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
-            style={{
-                padding: "1px",
-                background: "linear-gradient(to bottom right, rgba(189, 255, 0, 0.3), rgba(255, 0, 255, 0.1))",
-                mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                maskComposite: "exclude",
-                WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                WebkitMaskComposite: "xor",
+        {/* Hover Glow & Border Effect */}
+        <motion.div 
+            className="absolute inset-0 rounded-[32px] z-20 pointer-events-none"
+            variants={{
+                hover: { 
+                    borderColor: "rgba(163, 230, 53, 0.5)", // lime-400/50
+                    boxShadow: "0 0 30px -5px rgba(189,255,0,0.2)"
+                }
             }}
-        />
-
-        {/* 1px Inner Glowing Rim - HOVER STATE (Solid Highlight Color) */}
-        <div 
-            className="absolute inset-0 rounded-[32px] z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
             style={{
-                border: `1px solid ${highlightColor}`,
-                boxShadow: `inset 0 0 20px ${highlightColor}20`
+                borderWidth: "1px",
+                borderColor: "transparent" // Initially transparent, handled by variants or class if needed, but here we animate it on top or replace the base border? 
+                // Actually, simpler to apply hover styles to the main container or an overlay. 
+                // The main container has `border border-white/10`. On hover we want to CHANGE that.
+                // Framer motion on the parent `className` is hard.
+                // Let's use this absolute div to be the "Highlight Border" that fades in.
             }}
-        />
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+        >
+             <div className="absolute inset-0 rounded-[32px] border border-lime-400/50 shadow-[0_0_30px_-5px_rgba(189,255,0,0.2)]" />
+        </motion.div>
         
         {/* Ambient Light Source (Top-Left Radial Glow) */}
         <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-[radial-gradient(circle,rgba(132,204,22,0.1)_0%,transparent_70%)] blur-[60px] pointer-events-none z-0" />
@@ -86,7 +87,7 @@ export default function ArchetypeCard({
                         boxShadow: `0 0 15px ${highlightColor}1A`
                     }}
                 >
-                    <Icon className="w-6 h-6" style={{ color: highlightColor }} />
+                    <Icon className="w-6 h-6" style={{ color: highlightColor }} strokeWidth={1.5} />
                 </div>
 
                 <div className="space-y-2">
