@@ -85,8 +85,7 @@ export default function LiveDemo() {
                                      onBlur={() => setIsFocused(false)}
                                      onKeyDown={(e) => e.key === 'Enter' && handleRemix()}
                                      placeholder="Paste_Reel_Link..."
-                                     className="w-full bg-transparent border-none outline-none text-white placeholder-zinc-700 font-mono caret-transparent z-10" // Hide default caret
-                                     autoFocus
+                                     className="w-full bg-transparent border-none outline-none text-white placeholder-zinc-700 font-mono caret-transparent z-10"
                                  />
                                  
                                  {/* Custom Block Cursor */}
