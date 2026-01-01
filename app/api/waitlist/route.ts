@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { getDatabase } from '@/lib/mongodb';
 
 interface WaitlistEntry {
   id: string;
@@ -10,33 +9,6 @@ interface WaitlistEntry {
   createdAt: string;
   userAgent?: string;
   ipAddress?: string;
-}
-
-// Path to store waitlist data (in production, use a database)
-const DATA_DIR = path.join(process.cwd(), 'data');
-const WAITLIST_FILE = path.join(DATA_DIR, 'waitlist.json');
-
-async function ensureDataDir() {
-  try {
-    await fs.access(DATA_DIR);
-  } catch {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-  }
-}
-
-async function readWaitlist(): Promise<WaitlistEntry[]> {
-  try {
-    await ensureDataDir();
-    const data = await fs.readFile(WAITLIST_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch {
-    return [];
-  }
-}
-
-async function writeWaitlist(entries: WaitlistEntry[]): Promise<void> {
-  await ensureDataDir();
-  await fs.writeFile(WAITLIST_FILE, JSON.stringify(entries, null, 2), 'utf-8');
 }
 
 function validateEmail(email: string): boolean {
@@ -89,13 +61,16 @@ export async function POST(request: NextRequest) {
       instagramId.startsWith('@') ? instagramId.slice(1) : instagramId
     );
 
-    // Check for duplicates
-    const existingEntries = await readWaitlist();
-    const isDuplicateEmail = existingEntries.some(
-      (entry) => entry.email.toLowerCase() === sanitizedEmail
-    );
+    // Get MongoDB database
+    const db = await getDatabase();
+    const collection = db.collection<WaitlistEntry>('waitlist');
 
-    if (isDuplicateEmail) {
+    // Check for duplicate email
+    const existingEntry = await collection.findOne({ 
+      email: sanitizedEmail 
+    });
+
+    if (existingEntry) {
       return NextResponse.json(
         { 
           success: false, 
@@ -104,6 +79,9 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
+
+    // Get current count for spot number
+    const currentCount = await collection.countDocuments();
 
     // Create new entry
     const newEntry: WaitlistEntry = {
@@ -118,21 +96,21 @@ export async function POST(request: NextRequest) {
                  'unknown',
     };
 
-    // Save to file
-    existingEntries.push(newEntry);
-    await writeWaitlist(existingEntries);
+    // Insert into MongoDB
+    await collection.insertOne(newEntry);
 
     // Log for monitoring
     console.log(`[Waitlist] New signup: ${sanitizedEmail} (@${sanitizedInstagramId})`);
 
     // Return success with spot number
+    const spotNumber = currentCount + 1;
     return NextResponse.json({
       success: true,
       message: 'Successfully joined the waitlist!',
       data: {
-        spotNumber: existingEntries.length,
+        spotNumber: spotNumber,
         totalSpots: 100,
-        spotsRemaining: Math.max(0, 100 - existingEntries.length),
+        spotsRemaining: Math.max(0, 100 - spotNumber),
       }
     });
 
@@ -162,7 +140,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const entries = await readWaitlist();
+    // Get MongoDB database
+    const db = await getDatabase();
+    const collection = db.collection<WaitlistEntry>('waitlist');
+
+    const entries = await collection.find({}).toArray();
 
     // Return summary for preview, full list for admin
     if (adminKey === 'preview') {
@@ -177,7 +159,7 @@ export async function GET(request: NextRequest) {
       success: true,
       count: entries.length,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      entries: entries.map(({ ipAddress: _ipAddress, userAgent: _userAgent, ...rest }) => rest),
+      entries: entries.map(({ ipAddress, userAgent, ...rest }) => rest),
     });
 
   } catch (error) {

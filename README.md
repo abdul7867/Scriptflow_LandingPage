@@ -98,12 +98,12 @@ User signups are collected via the `/api/waitlist` endpoint:
 **GET /api/waitlist?key=preview** → Get count only
 **GET /api/waitlist?key=ADMIN_KEY** → Get full list (admin)
 
-### Database Upgrade (Production)
-Replace JSON file storage with:
-- **Supabase** (recommended)
-- **PlanetScale** (MySQL)
-- **Neon** (PostgreSQL)
-- **MongoDB Atlas**
+### Database Configuration
+This project uses **MongoDB** for storing waitlist data.
+
+1. Create a MongoDB Atlas account (free tier available).
+2. Get your connection string.
+3. Add it to `.env.local` as `MONGODB_URI`.
 
 ## 📱 Mobile Responsiveness
 
@@ -157,7 +157,7 @@ Built-in via `vercel.json`:
 - [x] Vercel deployment config
 - [ ] Set environment variables in Vercel
 - [ ] Configure custom domain
-- [ ] Replace JSON with database
+- [x] Replace JSON with MongoDB
 - [ ] Add analytics (optional)
 - [ ] Add error monitoring (optional)
 - [ ] Run Lighthouse audit
@@ -179,6 +179,7 @@ Built-in via `vercel.json`:
 - **Icons**: Lucide React
 - **Fonts**: Google Fonts (via next/font)
 - **Deployment**: Vercel
+- **Database**: MongoDB Atlas
 
 ---
 

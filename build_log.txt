@@ -17,8 +17,8 @@ info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/d
    Generating static pages (1/7) 
    Generating static pages (3/7) 
    Generating static pages (5/7) 
-Time 18.7111
-Time 32.7443
+Time 44.1085
+Time 32.8443
  Γ£ô Generating static pages (7/7)
    Finalizing page optimization ...
    Collecting build traces ...
