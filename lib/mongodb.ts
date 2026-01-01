@@ -1,7 +1,16 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db, MongoClientOptions } from 'mongodb';
 
 const uri = process.env.MONGODB_URI;
-const options = {};
+
+// Optimized connection options for serverless environments
+const options: MongoClientOptions = {
+  maxPoolSize: 10,           // Connection pooling
+  minPoolSize: 2,            // Keep minimum connections ready
+  serverSelectionTimeoutMS: 5000,  // Faster failure detection
+  socketTimeoutMS: 45000,    // Socket timeout
+  retryWrites: true,         // Reliability
+  retryReads: true,
+};
 
 let client: MongoClient | null = null;
 let clientPromise: Promise<MongoClient> | null = null;
