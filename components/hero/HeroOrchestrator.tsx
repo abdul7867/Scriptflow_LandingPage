@@ -9,6 +9,7 @@ import Terminal, { TerminalStatus } from "./Terminal";
 import InstagramPhone from "./InstagramPhone";
 import HeroHeading from "./HeroHeading";
 import TiltCard, { DriftingBackground } from "@/components/TiltCard";
+import { useSignup } from "@/context/SignupContext";
 
 /**
  * Maps global animation stage to Terminal status prop
@@ -26,6 +27,7 @@ function mapStageToTerminalStatus(stage: AnimationStage): TerminalStatus {
  */
 function HeroContent() {
     const { stage, triggerShare, handleBeamComplete } = useAnimationContext();
+    const { openSignupModal } = useSignup();
     
     const containerRef = useRef<HTMLDivElement>(null);
     const shareBtnRef = useRef<HTMLButtonElement>(null);
@@ -103,38 +105,39 @@ function HeroContent() {
             <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
                 
                 {/* --- HERO TEXT CONTENT --- */}
-                <div className="w-full max-w-5xl mx-auto px-4 md:px-8 mb-16 lg:mb-20 relative z-20 flex flex-col items-center text-center">
+                <div className="w-full max-w-5xl mx-auto px-2 sm:px-4 md:px-8 mb-10 sm:mb-16 lg:mb-20 relative z-20 flex flex-col items-center text-center">
                     
-                    {/* Scarcity Badge */}
+                    {/* Scarcity Badge - Mobile Optimized */}
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-md bg-white/5 mb-6 hover:bg-white/10 transition-colors cursor-default"
+                        className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-md bg-white/5 mb-4 sm:mb-6 hover:bg-white/10 transition-colors cursor-default"
                     >
-                        <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_10px_#ef4444]" />
-                        <span className="text-sm font-medium text-zinc-300">
-                            High Demand: <span className="text-white font-bold">4 Spots Left</span>
+                        <span className="w-2 h-2 rounded-full bg-[#ccff00] animate-pulse shadow-[0_0_10px_#ccff00]" />
+                        <span className="text-xs sm:text-sm font-medium text-zinc-300">
+                            Beta Access: <span className="text-white font-bold">3 spots left</span>
                         </span>
                     </motion.div>
 
                     {/* Hero Heading */}
                     <HeroHeading />
 
-                    {/* CTA Button */}
+                    {/* CTA Button - Mobile Optimized */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="mt-8 md:mt-10"
+                        className="mt-6 sm:mt-8 md:mt-10"
                     >
                         <motion.button
+                            onClick={openSignupModal}
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
-                            className="group relative inline-flex items-center gap-3 px-8 py-4 bg-acid-lime text-black font-bold text-lg rounded-full overflow-hidden shadow-[0_0_30px_rgba(189,255,0,0.4)] hover:shadow-[0_0_40px_rgba(189,255,0,0.6)] transition-shadow"
+                            className="group relative inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-[#ccff00] text-black font-bold text-base sm:text-lg rounded-full overflow-hidden shadow-[0_0_30px_rgba(204,255,0,0.4)] hover:shadow-[0_0_40px_rgba(204,255,0,0.6)] transition-shadow"
                         >
-                            <span className="relative z-10">Join the First 100</span>
-                            <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform stroke-[2.5px]" />
+                            <span className="relative z-10">Get Early Access</span>
+                            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 group-hover:translate-x-1 transition-transform stroke-[2.5px]" />
                             
                             {/* Shimmer Effect */}
                             <motion.div

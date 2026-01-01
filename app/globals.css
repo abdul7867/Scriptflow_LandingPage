@@ -18,6 +18,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -30,6 +32,21 @@ body {
   background: var(--background);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   position: relative;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+  /* Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Better touch targets on mobile */
+button, a {
+  touch-action: manipulation;
 }
 
 body::before {
@@ -49,6 +66,13 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+/* Responsive text base size */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
 @keyframes scroll-up {
   0% { transform: translateY(0); }
   100% { transform: translateY(-50%); }
@@ -60,12 +84,22 @@ h1, h2, h3, h4, h5, h6 {
   100% { top: 0%; opacity: 0.8; }
 }
 
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 .animate-scroll-up {
   animation: scroll-up 2s linear infinite;
 }
 
 .animate-scan {
   animation: scan-move 3s ease-in-out infinite;
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
 }
 
 .paused {
@@ -79,4 +113,13 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
   background-image: url('/noise.svg');
   opacity: 0.05;
+}
+
+/* Hide scrollbar for cleaner look but allow scrolling */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

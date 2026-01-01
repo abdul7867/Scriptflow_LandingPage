@@ -2,8 +2,11 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useSignup } from "@/context/SignupContext";
 
 export default function Footer() {
+  const { openSignupModal } = useSignup();
+
   return (
     <footer className="w-full py-24 px-4 bg-gradient-to-b from-canvas to-zinc-950 flex flex-col items-center justify-center border-t border-white/5 relative overflow-hidden">
       {/* Background Ambience */}
@@ -16,6 +19,7 @@ export default function Footer() {
         </h2>
 
         <motion.button
+          onClick={openSignupModal}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-black font-bold text-xl rounded-full overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all hover:shadow-[0_0_40px_rgba(255,255,255,0.5)]"

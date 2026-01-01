@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://scriptflow.app/sitemap.xml
+
+# Block internal/API routes
+Disallow: /api/
+Disallow: /_next/

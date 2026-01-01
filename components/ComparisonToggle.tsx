@@ -78,11 +78,11 @@ export default function ComparisonToggle() {
                             <div className="w-4 h-4 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center text-[10px]">●</div>
                         </div>
                         <div className="px-3 py-1 rounded-md bg-acid-lime/10 border border-acid-lime/20 text-xs text-acid-lime font-mono uppercase tracking-wider">
-                            Viral Pattern Detected
+                            ✨ Script Generated in 3.2s
                         </div>
                     </div>
 
-                    <div className="space-y-8 font-sans text-xl text-white/90">
+                    <div className="space-y-6 font-sans text-xl text-white/90">
                         {/* Hook Section */}
                         <motion.div 
                             initial={{ opacity: 0, x: -10 }}
@@ -90,22 +90,31 @@ export default function ComparisonToggle() {
                             transition={{ delay: 0.1 }}
                             className="p-6 rounded-lg bg-acid-lime/10 border border-acid-lime/20 relative group"
                         >
-                            <div className="absolute top-2 right-2 px-2 py-1 rounded text-[10px] bg-acid-lime/20 text-acid-lime font-mono uppercase tracking-wide">
+                            <div className="absolute top-2 right-2 px-2 py-1 rounded text-[10px] bg-acid-lime/20 text-acid-lime font-mono uppercase tracking-wide flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 bg-acid-lime rounded-full animate-pulse"></span>
                                 Hook (0:03)
                             </div>
                             <p className="text-white font-medium z-10 relative leading-snug">
-                                &quot;Stop scrolling. Here is the exact prompt to 10x your views.&quot;
+                                &quot;Stop scrolling. Here is the exact prompt that got me 2M views.&quot;
                             </p>
                             {/* Pulse Effect */}
                             <div className="absolute inset-0 bg-acid-lime/5 rounded-lg animate-pulse z-0 pointer-events-none" />
                         </motion.div>
 
-                        {/* Body Section */}
-                        <div className="pl-6 border-l-2 border-white/10 space-y-3">
-                            <div className="h-4 bg-white/10 rounded w-3/4 animate-pulse" style={{ animationDelay: '0.2s' }} />
-                            <div className="h-4 bg-white/5 rounded w-full" />
-                            <div className="h-4 bg-white/5 rounded w-5/6" />
-                        </div>
+                        {/* Body Section - Now with actual content */}
+                        <motion.div 
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="pl-6 border-l-2 border-acid-lime/30 space-y-3"
+                        >
+                            <p className="text-zinc-300 text-base leading-relaxed">
+                                <span className="text-acid-lime font-semibold">Step 1:</span> Most creators fail because they skip the setup. Here&apos;s what the top 1% do differently...
+                            </p>
+                            <p className="text-zinc-400 text-sm">
+                                <span className="text-white/70">Body (0:08 - 0:45):</span> Problem → Agitation → Solution framework optimized for 87% retention
+                            </p>
+                        </motion.div>
 
                         {/* CTA Section */}
                         <motion.div 
@@ -115,12 +124,25 @@ export default function ComparisonToggle() {
                             className="p-6 rounded-lg bg-acid-magenta/10 border border-acid-magenta/20"
                         >
                             <div className="flex justify-between items-center mb-2">
-                                <span className="text-xs text-acid-magenta/70 font-mono uppercase">CTA</span>
+                                <span className="text-xs text-acid-magenta/70 font-mono uppercase">Viral CTA</span>
+                                <span className="text-[10px] text-acid-magenta/50 font-mono">92% engagement rate</span>
                             </div>
                              <p className="text-acid-magenta font-bold text-2xl">
-                                &quot;Comment &apos;SCRIPT&apos; for access.&quot;
+                                &quot;Comment &apos;SCRIPT&apos; and I&apos;ll DM you the template.&quot;
                             </p>
                         </motion.div>
+
+                        {/* Stats bar */}
+                        <div className="flex items-center gap-4 text-xs text-zinc-500 pt-4 border-t border-white/5">
+                            <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                                Optimized for Reels
+                            </span>
+                            <span>•</span>
+                            <span>Est. Watch Time: 89%</span>
+                            <span>•</span>
+                            <span className="text-acid-lime">Ready to Film</span>
+                        </div>
                     </div>
 
                     {/* Subtle Grid Overlay */}
