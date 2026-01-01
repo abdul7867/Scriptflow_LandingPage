@@ -28,7 +28,7 @@ export default function LiveDemo() {
   };
 
   return (
-    <section className="w-full py-32 px-4 bg-black flex flex-col items-center border-t border-white/5 relative overflow-hidden">
+    <section className="w-full py-16 md:py-32 px-4 bg-black flex flex-col items-center border-t border-white/5 relative overflow-hidden">
       
       {/* Background Ambience */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-acid-lime/5 rounded-full blur-[120px] pointer-events-none" />
@@ -186,16 +186,16 @@ export default function LiveDemo() {
             
             {/* Helper Inputs */}
             {step === "input" && (
-                <div className="mt-6 flex justify-center gap-6 opacity-40 hover:opacity-100 transition-opacity">
+                <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 opacity-70 hover:opacity-100 transition-opacity">
                     <button 
                         onClick={() => setInputText("instagram.com/reel/viral_1")} 
-                        className="text-xs font-mono text-zinc-500 hover:text-white border-b border-transparent hover:border-zinc-500"
+                        className="text-xs font-mono text-zinc-500 hover:text-white border-b border-zinc-800 hover:border-zinc-500 pb-1"
                     >
                         example_1.reels
                     </button>
                     <button 
                          onClick={() => setInputText("tiktok.com/@creator/hook")} 
-                         className="text-xs font-mono text-zinc-500 hover:text-white border-b border-transparent hover:border-zinc-500"
+                         className="text-xs font-mono text-zinc-500 hover:text-white border-b border-zinc-800 hover:border-zinc-500 pb-1"
                     >
                         example_2.tiktok
                     </button>

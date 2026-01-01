@@ -40,7 +40,7 @@ const wordVariants: Variants = {
   // HeroDirector handles the animation state internally
   
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-32 pb-32 px-4 overflow-hidden bg-black">
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center pt-24 pb-24 md:pt-32 md:pb-32 px-4 overflow-hidden bg-black">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[10%] left-[10%] w-[600px] h-[600px] bg-acid-magenta/20 rounded-full blur-[120px] mix-blend-screen" />

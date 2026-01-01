@@ -59,7 +59,7 @@ export default function ComparisonToggle() {
       </div>
 
       {/* Comparison Container */}
-      <div className="relative w-full max-w-4xl min-h-[500px]">
+      <div className="relative w-full max-w-4xl min-h-[400px] md:min-h-[500px]">
         {/* We use a single AnimatePresence to handle the switch */}
         <div className="relative w-full h-full min-h-[500px]">
              
@@ -69,7 +69,7 @@ export default function ComparisonToggle() {
              */}
             <div className="absolute inset-0 w-full h-full"> 
                 {/* The ScriptFlow Way: High-Tech Glass Card */}
-                <div className="w-full h-full rounded-xl p-12 border border-glass-border bg-gradient-to-br from-zinc-900 to-black backdrop-blur-xl shadow-[0_0_50px_rgba(189,255,0,0.1)] flex flex-col overflow-hidden">
+                <div className="w-full h-full rounded-xl p-6 md:p-12 border border-glass-border bg-gradient-to-br from-zinc-900 to-black backdrop-blur-xl shadow-[0_0_50px_rgba(189,255,0,0.1)] flex flex-col overflow-hidden">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
                         <div className="flex gap-2">
@@ -162,7 +162,7 @@ export default function ComparisonToggle() {
                         className="absolute inset-0 z-10"
                     >
                         {/* The Old Way: Boring Paper Card */}
-                        <div className="w-full h-full bg-[#f0f0f0] rounded-xl p-12 shadow-xl text-[#1a1a1a] border border-zinc-300 flex flex-col gap-6 relative overflow-hidden" 
+                        <div className="w-full h-full bg-[#f0f0f0] rounded-xl p-6 md:p-12 shadow-xl text-[#1a1a1a] border border-zinc-300 flex flex-col gap-6 relative overflow-hidden" 
                              style={{ fontFamily: "'Courier Prime', 'Courier New', monospace" }}>
                             
                             {/* Paper Texture/Noise */}

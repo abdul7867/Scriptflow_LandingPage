@@ -12,7 +12,7 @@ export default function FoundersManifesto() {
       {/* Background Glow Effect behind the paper */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-500/10 blur-[100px] rounded-full pointer-events-none" />
 
-      <div className={`relative max-w-2xl mx-auto bg-[#f4f4f0] text-zinc-900 p-8 md:p-12 rounded-sm shadow-2xl rotate-1 ${inter.className}`}>
+      <div className={`relative max-w-2xl mx-auto bg-[#f4f4f0] text-zinc-900 p-6 sm:p-8 md:p-12 rounded-sm shadow-2xl rotate-1 ${inter.className}`}>
         
         {/* Paper Header */}
         <h2 className={`${playfair.className} italic text-4xl md:text-5xl font-bold mb-8 text-black tracking-tight`}>

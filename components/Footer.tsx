@@ -8,7 +8,7 @@ export default function Footer() {
   const { openSignupModal } = useSignup();
 
   return (
-    <footer className="w-full py-24 px-4 bg-gradient-to-b from-canvas to-zinc-950 flex flex-col items-center justify-center border-t border-white/5 relative overflow-hidden">
+    <footer className="w-full py-16 md:py-24 px-4 bg-gradient-to-b from-canvas to-zinc-950 flex flex-col items-center justify-center border-t border-white/5 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[100px] pointer-events-none" />
 

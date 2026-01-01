@@ -34,7 +34,7 @@ const personas = [
 
 export default function TargetAudience() {
   return (
-    <section className="w-full bg-brand-dark py-24 px-4 relative overflow-hidden">
+    <section className="w-full bg-brand-dark py-16 md:py-24 px-4 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-acid-magenta/5 rounded-full blur-[120px]" />
@@ -45,7 +45,7 @@ export default function TargetAudience() {
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-10%" }}
             className="font-heading font-bold text-3xl md:text-5xl text-white"
           >
             Built for the New Wave of Creators.

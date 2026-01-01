@@ -219,9 +219,14 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.1, type: "spring" }}
-                        className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-acid-lime/10 border border-acid-lime/20 mb-4"
+                        className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-acid-lime/20 to-lime-500/5 border border-acid-lime/30 mb-6 shadow-[0_0_30px_rgba(189,255,0,0.15)] relative group"
                       >
-                        <Sparkles className="w-8 h-8 text-acid-lime" />
+                         {/* Ticket Icon */}
+                         <svg viewBox="0 0 24 24" fill="none" className="w-10 h-10 text-acid-lime drop-shadow-[0_0_10px_rgba(189,255,0,0.5)] transform -rotate-12 group-hover:rotate-0 transition-transform duration-500" stroke="currentColor" strokeWidth="1.5">
+                            <path d="M4 8V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2M4 8v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M4 8h16M2 12h2M20 12h2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M9 12h6" strokeWidth="2" strokeLinecap="round"/>
+                         </svg>
+                         <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-white animate-pulse" fill="#fff" />
                       </motion.div>
                       <h2 className="font-heading font-bold text-2xl md:text-3xl text-white mb-2">
                         Join the Waitlist

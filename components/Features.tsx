@@ -39,11 +39,11 @@ export default function Features() {
               key={index}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-10%" }}
               transition={{ delay: index * 0.15 }}
             >
               <TiltCard className="h-full rounded-2xl" intensity={10} glowOpacity={0.15}>
-                <div className="h-full p-8 rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 hover:border-acid-lime/50 transition-colors group">
+                <div className="h-full p-6 md:p-8 rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 hover:border-acid-lime/50 transition-colors group">
                   <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-white/5">
                     {feature.icon}
                   </div>

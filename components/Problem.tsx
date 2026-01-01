@@ -20,7 +20,7 @@ export default function Problem() {
   };
 
   return (
-    <section className="w-full py-48 bg-brand-dark flex flex-col items-center justify-center px-4 overflow-hidden">
+    <section className="w-full py-24 md:py-48 bg-brand-dark flex flex-col items-center justify-center px-4 overflow-hidden">
       <div className="max-w-5xl mx-auto text-center">
         <motion.div
           initial="hidden"

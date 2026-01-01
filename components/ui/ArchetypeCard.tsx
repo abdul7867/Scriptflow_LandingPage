@@ -55,7 +55,7 @@ export default function ArchetypeCard({
             }}
             style={{
                 borderWidth: "1px",
-                borderColor: "transparent" // Initially transparent, handled by variants or class if needed, but here we animate it on top or replace the base border? 
+                borderColor: "rgba(163, 230, 53, 0)" // Initially transparent, handled by variants or class if needed, but here we animate it on top or replace the base border? 
                 // Actually, simpler to apply hover styles to the main container or an overlay. 
                 // The main container has `border border-white/10`. On hover we want to CHANGE that.
                 // Framer motion on the parent `className` is hard.
@@ -69,13 +69,13 @@ export default function ArchetypeCard({
         </motion.div>
         
         {/* Ambient Light Source (Top-Left Radial Glow) */}
-        <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-[radial-gradient(circle,rgba(132,204,22,0.1)_0%,transparent_70%)] blur-[60px] pointer-events-none z-0" />
+        <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-[radial-gradient(circle,rgba(132,204,22,0.1)_0%,rgba(132,204,22,0)_70%)] blur-[60px] pointer-events-none z-0" />
 
         {/* Internal Layout Grid */}
         <div className="relative z-10 h-full grid grid-rows-[30%_70%]">
             
             {/* Top Zone: Content (30%) */}
-            <div className="px-8 pt-8 flex flex-col items-start gap-4">
+            <div className="px-6 md:px-8 pt-8 flex flex-col items-start gap-4">
                  {/* Glowing Icon Square */}
                 <div 
                     className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105"

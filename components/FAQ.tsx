@@ -33,7 +33,7 @@ const faqItems: FAQItem[] = [
   {
     question: "What happens after the beta ends?",
     answer:
-      "Beta users get lifetime access to special perks including discounted pricing, priority support, and exclusive features. You'll always be grandfathered into better terms than new users. We value early adopters who help us shape the product.",
+      "Beta users will receive exclusive early-adopter perks, including special pricing and priority access to new features. You'll always have better terms than public users as a thank you for helping us shape the product.",
   },
   {
     question: "How many scripts can I generate?",
@@ -50,7 +50,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="w-full py-24 px-4 bg-brand-dark relative overflow-hidden">
+    <section className="w-full py-16 md:py-24 px-4 bg-brand-dark relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-acid-lime/5 rounded-full blur-[120px]" />
