@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, MotionValue } from "framer-motion";
 import { User, Crown } from "lucide-react";
 import { useRef } from "react";
 
@@ -13,8 +13,8 @@ const GravityDot = ({
 }: { 
     cx: number, 
     cy: number, 
-    mouseX: any, 
-    mouseY: any 
+    mouseX: MotionValue<number>, 
+    mouseY: MotionValue<number> 
 }) => {
     // Physical Force Calculation
     const x = useTransform([mouseX, mouseY], ([mx, my]) => {

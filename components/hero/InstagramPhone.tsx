@@ -14,7 +14,6 @@ import {
     Signal,
     Wifi,
     Battery,
-    ChevronDown,
     Camera,
     Volume2,
     VolumeX

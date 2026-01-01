@@ -388,7 +388,7 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
                     </motion.div>
 
                     <h3 className="font-heading font-bold text-2xl text-white mb-3">
-                      You're In! 🎉
+                      You&apos;re In! 🎉
                     </h3>
                     
                     {spotNumber && (
@@ -407,7 +407,7 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
                       Welcome aboard, <span className="text-white font-medium">{formData.name}</span>!
                     </p>
                     <p className="text-zinc-500 text-sm mb-6">
-                      We'll notify you at <span className="text-acid-lime">{formData.email}</span> when it's your turn.
+                      We&apos;ll notify you at <span className="text-acid-lime">{formData.email}</span> when it&apos;s your turn.
                     </p>
 
                     {spotsRemaining !== null && spotsRemaining > 0 && (

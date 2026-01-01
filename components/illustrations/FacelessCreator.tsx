@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import { cn } from "@/lib/utils";
+
 
 export default function FacelessCreator() {
   return (
@@ -84,9 +84,6 @@ export default function FacelessCreator() {
 
 // --- Subcomponent: Individual Bar ---
 const WaveformBar = ({ index }: { index: number }) => {
-    // Randomize initial phase for organic look
-    const randomDelay = Math.random();
-    
     return (
         <motion.div 
             className="w-full bg-gradient-to-t from-green-900 via-acid-lime to-white"

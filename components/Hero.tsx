@@ -1,18 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+
 import { motion, Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useScarcity } from "@/lib/useScarcity";
-import HeroDirector from "@/components/HeroDirector";
+import HeroOrchestrator from "@/components/hero/HeroOrchestrator";
 
 // --- Configuration ---
 // (Pixel Grid constants removed as they are no longer used)
 
-// --- Assets ---
-// "Viral Reel" Placeholder - Using a specific Unsplash image of a person talking/filming
-const REEL_IMAGE_URL = "url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop')";
+
 
 // Headline Variants
 const containerVariants: Variants = {
@@ -131,7 +129,7 @@ const wordVariants: Variants = {
          transition={{ duration: 0.8, delay: 1.2 }}
          className="w-full max-w-7xl relative z-10 mt-10"
       >
-        <HeroDirector />
+        <HeroOrchestrator />
       </motion.div>
 
     </section>

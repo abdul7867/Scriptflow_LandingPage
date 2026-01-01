@@ -25,7 +25,7 @@ export const TypewriterEffect = ({
 
   const container: Variants = {
     hidden: { opacity: 0 },
-    visible: (i = 1) => ({
+    visible: () => ({
       opacity: 1,
       transition: { 
         staggerChildren: duration / characters.length, 

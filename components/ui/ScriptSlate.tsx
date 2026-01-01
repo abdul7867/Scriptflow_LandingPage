@@ -1,7 +1,5 @@
 import React, { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { TypewriterEffect } from "@/components/ui/TypewriterEffect";
 
 interface ScriptSlateProps {
   phase: "phone" | "flight" | "editor";

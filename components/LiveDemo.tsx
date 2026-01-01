@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { TextScramble } from "@/components/ui/TextScramble";
 
 export default function LiveDemo() {
@@ -42,7 +41,7 @@ export default function LiveDemo() {
                 See it in Action
             </h2>
             <p className="text-zinc-400 text-lg">
-                Paste a link. Get a viral script. <span className="text-acid-lime">It's that fast.</span>
+                Paste a link. Get a viral script. <span className="text-acid-lime">It&apos;s that fast.</span>
             </p>
         </div>
 
@@ -150,18 +149,18 @@ export default function LiveDemo() {
                             
                             <div className="space-y-4 border-l-2 border-acid-lime pl-4">
                                 <div>
-                                    <span className="text-zinc-500 uppercase text-xs tracking-widest block mb-1">/// HOOK DETECTED</span>
-                                    <p className="text-white text-lg">"Stop scrolling if you want to fix your engagement right now."</p>
+                                    <span className="text-zinc-500 uppercase text-xs tracking-widest block mb-1">HOOK DETECTED</span>
+                                    <p className="text-white text-lg">&quot;Stop scrolling if you want to fix your engagement right now.&quot;</p>
                                 </div>
                                 
                                 <div>
-                                    <span className="text-zinc-500 uppercase text-xs tracking-widest block mb-1">/// FRAMEWORK</span>
-                                    <p className="text-zinc-400">"Most creators fail because they ignore the first 3 seconds. Here is the exact framework used by the top 1% to retain viewers..."</p>
+                                    <span className="text-zinc-500 uppercase text-xs tracking-widest block mb-1">FRAMEWORK</span>
+                                    <p className="text-zinc-400">&quot;Most creators fail because they ignore the first 3 seconds. Here is the exact framework used by the top 1% to retain viewers...&quot;</p>
                                 </div>
 
                                 <div>
-                                     <span className="text-zinc-500 uppercase text-xs tracking-widest block mb-1">/// OPTIMIZED CTA</span>
-                                     <p className="text-acid-lime">"Comment <span className="underline decoration-acid-lime/50">SCRIPT</span> and I'll send you the template."</p>
+                                     <span className="text-zinc-500 uppercase text-xs tracking-widest block mb-1">OPTIMIZED CTA</span>
+                                     <p className="text-acid-lime">&quot;Comment <span className="underline decoration-acid-lime/50">SCRIPT</span> and I&apos;ll send you the template.&quot;</p>
                                 </div>
                             </div>
 

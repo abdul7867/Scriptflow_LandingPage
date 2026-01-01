@@ -176,7 +176,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       count: entries.length,
-      entries: entries.map(({ ipAddress, userAgent, ...rest }) => rest),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      entries: entries.map(({ ipAddress: _ipAddress, userAgent: _userAgent, ...rest }) => rest),
     });
 
   } catch (error) {

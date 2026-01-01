@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Zap, Smartphone, CheckCircle } from "lucide-react";
+import { Sparkles, Zap, Smartphone } from "lucide-react";
 import TiltCard from "./TiltCard";
 
 const features = [

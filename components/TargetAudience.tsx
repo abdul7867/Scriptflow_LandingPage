@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Ghost, Mic, Layers, ArrowRight } from "lucide-react";
+import { Ghost, Mic, Layers } from "lucide-react";
 
 import ArchetypeCard from "@/components/ui/ArchetypeCard";
 import FacelessCreator from "@/components/illustrations/FacelessCreator";

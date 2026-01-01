@@ -77,7 +77,7 @@ export default function FAQ() {
             <span className="text-acid-lime">Questions</span>
           </h2>
           <p className="text-lg text-zinc-400 max-w-xl mx-auto">
-            Everything you need to know about ScriptFlow. Can't find what you're
+            Everything you need to know about ScriptFlow. Can&apos;t find what you&apos;re
             looking for? Reach out to us directly.
           </p>
         </motion.div>

@@ -6,10 +6,9 @@ interface DataShardProps {
   id: number;
   color: string;
   phase: "phone" | "flight" | "editor";
-  index: number;
 }
 
-export const DataShard = ({ id, color, phase, index }: DataShardProps) => {
+export const DataShard = ({ id, color, phase }: DataShardProps) => {
   // Determine Layout Variants based on Phase
   // But purely relying on layoutId for position morphing.
   // We use styled components or classes for the visual shape changes.

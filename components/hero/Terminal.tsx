@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Loader2, Sparkles, Zap, Copy, CheckCheck, Mic, Clapperboard, MonitorPlay, Type, Clock } from "lucide-react";
+import { Check, Loader2, Sparkles, Zap, Copy, CheckCheck, Mic, Clapperboard, Type, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type TerminalStatus = "idle" | "processing" | "success";

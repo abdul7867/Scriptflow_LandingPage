@@ -8,7 +8,6 @@ interface ArchetypeCardProps {
   icon: LucideIcon;
   title: string;
   description: string;
-  gradient?: string; 
   children?: React.ReactNode; 
   className?: string;
   highlightColor?: string; // e.g. "#bdff00" or "#d946ef"
@@ -18,7 +17,6 @@ export default function ArchetypeCard({
   icon: Icon,
   title,
   description,
-  gradient,
   children,
   className,
   highlightColor = "#bdff00" // Default Acid Lime
