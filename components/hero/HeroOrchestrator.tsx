@@ -62,7 +62,7 @@ function HeroContent() {
     }, [triggerShare]);
 
     return (
-        <div className="w-full relative overflow-hidden bg-brand-black py-16 lg:py-24">
+        <div className="w-full relative overflow-hidden bg-brand-black pt-10 pb-16 lg:pt-16 lg:pb-24">
             {/* === AMBIENT ATMOSPHERE === */}
             
             {/* Noise texture */}
@@ -103,7 +103,7 @@ function HeroContent() {
             <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
                 
                 {/* --- HERO TEXT CONTENT --- */}
-                <div className="w-full max-w-5xl mx-auto px-4 md:px-8 mb-16 lg:mb-20 relative z-20 flex flex-col items-start">
+                <div className="w-full max-w-5xl mx-auto px-4 md:px-8 mb-16 lg:mb-20 relative z-20 flex flex-col items-center text-center">
                     
                     {/* Scarcity Badge */}
                     <motion.div
