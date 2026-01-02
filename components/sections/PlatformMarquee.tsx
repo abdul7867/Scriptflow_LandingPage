@@ -1,113 +1,284 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 
-interface PlatformMarqueeProps {
-  isActive?: boolean;
-}
-
-const platforms = [
+// ScriptFlow service capabilities - what the AI decodes
+const capabilities = [
   {
-    name: "Instagram",
-    id: "instagram",
+    name: "Hook Analysis",
+    description: "First 3 seconds",
     icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 md:w-10 md:h-10">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.584-.012-4.849-.069-3.225-.149-4.771-1.664-4.919-4.919-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.948-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-      </svg>
+      <motion.svg viewBox="0 0 40 40" className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12">
+        {/* Hook shape with pulse */}
+        <motion.path
+          d="M20 5 L20 20 Q20 30 10 30"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          className="text-acid-lime"
+          animate={{
+            pathLength: [0, 1, 1],
+            opacity: [0.5, 1, 0.5],
+          }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.circle
+          cx="10" cy="30" r="4"
+          className="fill-acid-lime"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+        {/* Scan lines */}
+        {[0, 1, 2].map((i) => (
+          <motion.line
+            key={i}
+            x1="25" y1={10 + i * 8} x2="35" y2={10 + i * 8}
+            stroke="currentColor"
+            strokeWidth="2"
+            className="text-acid-lime/50"
+            animate={{ opacity: [0.2, 0.8, 0.2], x1: [25, 28, 25] }}
+            transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+          />
+        ))}
+      </motion.svg>
     ),
   },
   {
-    name: "CapCut",
-    id: "capcut",
+    name: "Pacing Decoder",
+    description: "Rhythm & Flow",
     icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 md:w-10 md:h-10">
-        <path d="M5.5 5.5v13h13v-13h-13zm11 11h-9v-9h9v9z" fillOpacity="0" stroke="currentColor" strokeWidth="2.5" />
-        <path d="M8 8l8 8M16 8l-8 8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-      </svg>
+      <motion.svg viewBox="0 0 40 40" className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12">
+        {/* Audio waveform bars */}
+        {[0, 1, 2, 3, 4].map((i) => (
+          <motion.rect
+            key={i}
+            x={5 + i * 7}
+            y={20}
+            width="5"
+            rx="2"
+            className="fill-acid-lime"
+            animate={{
+              height: [8, 20, 12, 18, 8],
+              y: [20, 10, 15, 12, 20],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              delay: i * 0.1,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </motion.svg>
     ),
   },
   {
-    name: "VN Video Editor",
-    id: "vn",
+    name: "Viral Triggers",
+    description: "Psychology Patterns",
     icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 md:w-10 md:h-10">
-        <rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="2" fill="none" />
-        <path d="M7 7h2.5l3.5 6 3.5-6H19v10h-2.5v-6l-3.5 6h-2l-3.5-6v6H7V7z" />
-      </svg>
+      <motion.svg viewBox="0 0 40 40" className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12">
+        {/* Brain/neural network */}
+        <motion.circle
+          cx="20" cy="20" r="12"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="text-acid-magenta"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        />
+        {/* Neural nodes */}
+        {[0, 72, 144, 216, 288].map((angle, i) => {
+          const rad = (angle * Math.PI) / 180;
+          const x = 20 + Math.cos(rad) * 12;
+          const y = 20 + Math.sin(rad) * 12;
+          return (
+            <motion.circle
+              key={i}
+              cx={x} cy={y} r="3"
+              className="fill-acid-magenta"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.3 }}
+            />
+          );
+        })}
+        {/* Center pulse */}
+        <motion.circle
+          cx="20" cy="20" r="5"
+          className="fill-acid-magenta"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+        />
+      </motion.svg>
     ),
   },
   {
-    name: "Premiere Pro",
-    id: "premiere",
+    name: "Voice Clone",
+    description: "Your Unique Style",
     icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 md:w-10 md:h-10">
-         <rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="2" fill="none" />
-         <text x="5" y="15" fontSize="10" fontFamily="sans-serif" fontWeight="bold" fill="currentColor">Pr</text>
-      </svg>
+      <motion.svg viewBox="0 0 40 40" className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12">
+        {/* Microphone with waves */}
+        <motion.rect
+          x="15" y="8" width="10" height="16" rx="5"
+          className="fill-acid-lime stroke-acid-lime"
+          strokeWidth="1"
+          animate={{ opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+        <motion.path
+          d="M10 20 Q10 32 20 32 Q30 32 30 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="text-acid-lime"
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
+        />
+        <motion.line
+          x1="20" y1="32" x2="20" y2="36"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="text-acid-lime"
+        />
+        {/* Sound waves - hidden on mobile for cleaner look */}
+        {[1, 2, 3].map((i) => (
+          <motion.path
+            key={i}
+            d={`M${32 + i * 3} 15 Q${35 + i * 3} 20 ${32 + i * 3} 25`}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            className="text-acid-lime/60 hidden sm:block"
+            animate={{ opacity: [0, 0.8, 0], x: [0, 2, 0] }}
+            transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+          />
+        ))}
+      </motion.svg>
+    ),
+  },
+  {
+    name: "CTA Optimizer",
+    description: "Engagement Boost",
+    icon: (
+      <motion.svg viewBox="0 0 40 40" className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12">
+        {/* Target with arrow */}
+        <motion.circle
+          cx="20" cy="20" r="15"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-white/30"
+        />
+        <motion.circle
+          cx="20" cy="20" r="10"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-white/50"
+        />
+        <motion.circle
+          cx="20" cy="20" r="5"
+          className="fill-acid-lime"
+          animate={{ scale: [1, 1.2, 1] }}
+          transition={{ duration: 1, repeat: Infinity }}
+        />
+        {/* Rising arrow */}
+        <motion.path
+          d="M30 25 L35 10 L25 15"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-acid-lime"
+          animate={{ y: [0, -3, 0], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+      </motion.svg>
     ),
   },
 ];
 
-export default function PlatformMarquee({ isActive = false }: PlatformMarqueeProps) {
+export default function PlatformMarquee() {
   return (
-    <div className="w-full py-10 flex flex-col items-center justify-center overflow-hidden relative z-20">
-        <div className="flex flex-col items-center gap-8">
-            <p className={cn(
-                "font-mono text-xs md:text-sm tracking-[0.2em] uppercase transition-colors duration-500",
-                isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "text-zinc-600"
-            )}>
-                DECODES VIRALITY FROM:
-            </p>
-            
-            <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 1.5 }}
-                className="flex items-center gap-12 md:gap-20 px-4 flex-wrap justify-center relative"
-            >
-                {platforms.map((platform) => {
-                    const isInstagram = platform.id === "instagram";
-                    const pulse = isInstagram && isActive;
-
-                    return (
-                        <motion.div 
-                            key={platform.name}
-                            className="cursor-default relative"
-                            title={platform.name}
-                            animate={pulse ? {
-                                color: ["#52525b", "#E1306C"], // zinc-600 -> Brand
-                                scale: [1, 1.1, 1]
-                            } : {
-                                color: "#52525b", // zinc-600
-                                scale: 1
-                            }}
-                            transition={pulse ? {
-                                duration: 0.5,
-                                repeat: Infinity,
-                                repeatType: "reverse"
-                            } : { duration: 0.5 }}
-                        >
-                            <div className={cn(
-                                "transition-all duration-300",
-                                !isInstagram && "opacity-50 grayscale hover:opacity-100 hover:grayscale-0 hover:text-white"
-                            )}>
-                                 {platform.icon}
-                            </div>
-                            
-                            {/* Vertical Connector Line for Instagram */}
-                            {pulse && (
-                                <motion.div 
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 100, opacity: 1 }}
-                                    className="absolute bottom-full left-1/2 w-[1px] bg-gradient-to-t from-[#E1306C] to-transparent -translate-x-1/2 pointer-events-none"
-                                />
-                            )}
-                        </motion.div>
-                    );
-                })}
-            </motion.div>
+    <div className="w-full py-10 sm:py-12 md:py-16 flex flex-col items-center justify-center overflow-hidden relative z-20 bg-gradient-to-b from-brand-black via-brand-dark to-brand-black px-4">
+      
+      {/* Ambient glow - smaller on mobile */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[400px] md:w-[600px] h-[150px] sm:h-[180px] md:h-[200px] bg-acid-lime/5 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px]" />
+      </div>
+      
+      <div className="flex flex-col items-center gap-6 sm:gap-8 md:gap-10 relative z-10 w-full max-w-6xl">
+        {/* Header */}
+        <div className="text-center space-y-2 sm:space-y-3">
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="font-mono text-[10px] sm:text-xs md:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase text-acid-lime font-bold"
+          >
+            AI-Powered Script Engine
+          </motion.p>
+          <motion.h3
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
+            className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-white"
+          >
+            What ScriptFlow <span className="text-acid-lime">Decodes</span>
+          </motion.h3>
         </div>
+        
+        {/* Capability Cards - Responsive Grid */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6 w-full"
+        >
+          {capabilities.map((capability, index) => (
+            <motion.div 
+              key={capability.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + index * 0.1, duration: 0.5, ease: "easeOut" }}
+              whileHover={{ 
+                scale: 1.03, 
+                y: -3,
+              }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:border-acid-lime/50 hover:bg-acid-lime/5 transition-all duration-300 cursor-default"
+            >
+              {/* Glow effect on hover */}
+              <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-acid-lime/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10" />
+              
+              {/* Icon */}
+              <div className="text-acid-lime group-hover:drop-shadow-[0_0_10px_rgba(189,255,0,0.5)] transition-all duration-300">
+                {capability.icon}
+              </div>
+              
+              {/* Text */}
+              <div className="text-center">
+                <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white group-hover:text-acid-lime transition-colors leading-tight">
+                  {capability.name}
+                </p>
+                <p className="text-[10px] sm:text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors mt-0.5 sm:mt-1 hidden sm:block">
+                  {capability.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Decorative line */}
+        <motion.div 
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+          className="w-20 sm:w-24 md:w-32 h-[1px] bg-gradient-to-r from-transparent via-acid-lime/50 to-transparent"
+        />
+      </div>
     </div>
   );
 }

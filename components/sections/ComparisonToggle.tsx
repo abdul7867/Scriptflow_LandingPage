@@ -8,24 +8,24 @@ export default function ComparisonToggle() {
   const [activeTab, setActiveTab] = useState<"old" | "new">("old");
 
   return (
-    <section className="w-full py-24 px-4 bg-brand-dark flex flex-col items-center">
+    <section className="w-full py-12 sm:py-16 md:py-24 px-4 bg-brand-dark flex flex-col items-center">
       
-      <div className="max-w-4xl mx-auto text-center mb-12 space-y-4">
-        <h2 className="font-heading font-bold text-3xl md:text-5xl text-white">
+      <div className="max-w-4xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 space-y-3 sm:space-y-4">
+        <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white">
           Evolution of a Viral Script
         </h2>
-        <p className="text-zinc-400 text-lg">
+        <p className="text-zinc-400 text-sm sm:text-base md:text-lg">
           See the difference between manual guessing and AI precision.
         </p>
       </div>
 
       {/* Toggle Controls */}
-      <div className="relative p-1 bg-white/5 rounded-full backdrop-blur-sm border border-white/10 mb-16 flex font-medium">
+      <div className="relative p-1 bg-white/5 rounded-full backdrop-blur-sm border border-white/10 mb-8 sm:mb-12 md:mb-16 flex font-medium">
           {/* Old Way Button */}
           <button
             onClick={() => setActiveTab("old")}
             className={cn(
-               "relative px-8 py-2.5 rounded-full text-sm transition-all duration-300 z-10",
+               "relative px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all duration-300 z-10",
                activeTab === "old" ? "text-black" : "text-zinc-400 hover:text-zinc-200"
             )}
           >
@@ -43,7 +43,7 @@ export default function ComparisonToggle() {
           <button
             onClick={() => setActiveTab("new")}
             className={cn(
-               "relative px-8 py-2.5 rounded-full text-sm transition-all duration-300 z-10",
+               "relative px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition-all duration-300 z-10",
                activeTab === "new" ? "text-black" : "text-zinc-400 hover:text-zinc-200"
             )}
           >
@@ -59,9 +59,9 @@ export default function ComparisonToggle() {
       </div>
 
       {/* Comparison Container */}
-      <div className="relative w-full max-w-4xl min-h-[400px] md:min-h-[500px]">
+      <div className="relative w-full max-w-4xl min-h-[350px] sm:min-h-[400px] md:min-h-[500px]">
         {/* We use a single AnimatePresence to handle the switch */}
-        <div className="relative w-full h-full min-h-[500px]">
+        <div className="relative w-full h-full min-h-[350px] sm:min-h-[400px] md:min-h-[500px]">
              
              {/* SCRIPTFLOW CARD (Always rendered but covered by Old Way if activeTab is 'old') 
                  Wait, user said 'Morph'. Actually, simplest way to 'burn away' is to have New Way always underneath
@@ -69,7 +69,7 @@ export default function ComparisonToggle() {
              */}
             <div className="absolute inset-0 w-full h-full"> 
                 {/* The ScriptFlow Way: High-Tech Glass Card */}
-                <div className="w-full h-full rounded-xl p-6 md:p-12 border border-glass-border bg-gradient-to-br from-zinc-900 to-black backdrop-blur-xl shadow-[0_0_50px_rgba(189,255,0,0.1)] flex flex-col overflow-hidden">
+                <div className="w-full h-full rounded-xl p-4 sm:p-6 md:p-8 lg:p-12 border border-glass-border bg-gradient-to-br from-zinc-900 to-black backdrop-blur-xl shadow-[0_0_50px_rgba(189,255,0,0.1)] flex flex-col overflow-hidden">
                     {/* Header */}
                     <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
                         <div className="flex gap-2">
@@ -82,7 +82,7 @@ export default function ComparisonToggle() {
                         </div>
                     </div>
 
-                    <div className="space-y-6 font-sans text-xl text-white/90">
+                    <div className="space-y-4 sm:space-y-5 md:space-y-6 font-sans text-base sm:text-lg md:text-xl text-white/90">
                         {/* Hook Section */}
                         <motion.div 
                             initial={{ opacity: 0, x: -10 }}

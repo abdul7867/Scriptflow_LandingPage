@@ -50,7 +50,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="w-full py-16 md:py-24 px-4 bg-brand-dark relative overflow-hidden">
+    <section className="w-full py-12 sm:py-16 md:py-24 px-4 bg-brand-dark relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-acid-lime/5 rounded-full blur-[120px]" />
@@ -72,11 +72,11 @@ export default function FAQ() {
             </span>
           </div>
 
-          <h2 className="font-heading font-bold text-3xl md:text-5xl text-white tracking-tight mb-4">
+          <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white tracking-tight mb-3 sm:mb-4">
             Frequently Asked{" "}
             <span className="text-acid-lime">Questions</span>
           </h2>
-          <p className="text-lg text-zinc-400 max-w-xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-zinc-400 max-w-xl mx-auto">
             Everything you need to know about ScriptFlow. Can&apos;t find what you&apos;re
             looking for? Reach out to us directly.
           </p>
@@ -104,9 +104,9 @@ export default function FAQ() {
                   className="w-full flex items-center justify-between p-6 text-left"
                 >
                   <span
-                    className={`font-medium text-lg ${
+                    className={`font-medium text-base sm:text-lg ${
                       openIndex === index ? "text-acid-lime" : "text-white"
-                    } transition-colors pr-4`}
+                    } transition-colors pr-3 sm:pr-4`}
                   >
                     {item.question}
                   </span>
@@ -149,9 +149,9 @@ export default function FAQ() {
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-green-500/10 border border-green-500/20">
-            <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-green-400 font-medium">
+          <div className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-green-500/10 border border-green-500/20">
+            <div className="w-2 sm:w-3 h-2 sm:h-3 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-green-400 font-medium text-xs sm:text-sm md:text-base">
               🔒 No credit card required • 100% free during beta • Cancel
               anytime
             </span>

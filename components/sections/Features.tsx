@@ -2,7 +2,10 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ScanEye, Sparkles, Zap, SlidersHorizontal } from "lucide-react";
+import ScanForensicsIcon from "@/components/icons/ScanForensicsIcon";
+import ChaosControlIcon from "@/components/icons/ChaosControlIcon";
+import GhostwriterIcon from "@/components/icons/GhostwriterIcon";
+import SpeedWorkflowIcon from "@/components/icons/SpeedWorkflowIcon";
 
 // Interactive Component for Vibe Control
 const VibeCheck = () => {
@@ -78,31 +81,39 @@ const VibeCheck = () => {
     )
 }
 
+// Custom animated icon components for each feature
+const featureIcons = {
+    forensics: ScanForensicsIcon,
+    chaos: ChaosControlIcon,
+    ghostwriter: GhostwriterIcon,
+    speed: SpeedWorkflowIcon,
+};
+
 const features = [
   {
     title: "AI Video Forensics",
     description:
       "Our AI breaks down viral hits frame-by-frame, extracting the exact pacing, hooks, and psychology that make them work.",
-    icon: ScanEye,
+    iconKey: "forensics" as const,
   },
   {
     title: "Chaos Control",
     description:
       "Don't sound like a bot. Dial in your chaos level to match your unique voice.",
-    icon: SlidersHorizontal,
+    iconKey: "chaos" as const,
     component: <VibeCheck />
   },
   {
     title: "Ghostwriter Mode",
     description:
       "It doesn't just copy. It rewrites the concept in YOUR unique voice, ensuring you never sound like a bot.",
-    icon: Sparkles,
+    iconKey: "ghostwriter" as const,
   },
   {
     title: "60-Second Workflow",
     description:
       "From blank page to finished script in under a minute. Stop overthinking and start filming.",
-    icon: Zap,
+    iconKey: "speed" as const,
   },
 ];
 
@@ -116,21 +127,21 @@ export default function Features() {
   const pathLength = useTransform(scrollYProgress, [0, 0.9], [0, 1]);
 
   return (
-    <section ref={containerRef} className="w-full bg-brand-dark py-32 md:py-48 px-4 relative overflow-hidden">
+    <section ref={containerRef} className="w-full bg-brand-dark py-16 sm:py-24 md:py-32 lg:py-48 px-4 relative overflow-hidden">
       
       {/* Background Ambience - Connection to Hero/Demo */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent to-acid-lime/50" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] h-32 bg-gradient-to-b from-acid-magenta/50 to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-16 sm:h-24 md:h-32 bg-gradient-to-b from-transparent to-acid-lime/50" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] h-16 sm:h-24 md:h-32 bg-gradient-to-b from-acid-magenta/50 to-transparent" />
         
-        {/* Blobs */}
-        <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-acid-lime/5 rounded-full blur-[100px] mix-blend-screen" />
-        <div className="absolute bottom-[20%] right-[10%] w-[500px] h-[500px] bg-acid-magenta/5 rounded-full blur-[100px] mix-blend-screen" />
+        {/* Blobs - smaller on mobile */}
+        <div className="absolute top-[20%] left-[10%] w-[250px] sm:w-[350px] md:w-[500px] h-[250px] sm:h-[350px] md:h-[500px] bg-acid-lime/5 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px] mix-blend-screen" />
+        <div className="absolute bottom-[20%] right-[10%] w-[250px] sm:w-[350px] md:w-[500px] h-[250px] sm:h-[350px] md:h-[500px] bg-acid-magenta/5 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px] mix-blend-screen" />
       </div>
 
       {/* Editorial Heading */}
-      <div className="max-w-4xl mx-auto text-center mb-32 relative z-10">
-        <h2 className="font-serif italic text-4xl md:text-7xl text-white/90">
+      <div className="max-w-4xl mx-auto text-center mb-12 sm:mb-20 md:mb-32 relative z-10">
+        <h2 className="font-serif italic text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white/90">
           How ScriptFlow Works
         </h2>
       </div>
@@ -177,7 +188,7 @@ export default function Features() {
             </svg>
         </div>
 
-        <div className="space-y-40">
+        <div className="space-y-16 sm:space-y-24 md:space-y-32 lg:space-y-40">
           {features.map((feature, index) => {
             const isLeft = index % 2 === 0;
             return (
@@ -205,20 +216,23 @@ export default function Features() {
                 </div>
 
                 {/* Content Side */}
-                <div className={`w-full md:w-1/2 pl-16 md:pl-0 ${isLeft ? "md:pr-24 md:text-right" : "md:pl-24 md:text-left"}`}>
-                    <div className="relative group p-8 rounded-3xl bg-[#050505]/60 backdrop-blur-[24px] border border-transparent border-t-white/10 hover:border-acid-lime transition-all duration-500 overflow-hidden">
+                <div className={`w-full md:w-1/2 pl-12 sm:pl-16 md:pl-0 ${isLeft ? "md:pr-12 lg:pr-24 md:text-right" : "md:pl-12 lg:pl-24 md:text-left"}`}>
+                    <div className="relative group p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl bg-[#050505]/60 backdrop-blur-[24px] border border-transparent border-t-white/10 hover:border-acid-lime transition-all duration-500 overflow-hidden">
                         {/* Radioactive Core */}
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(189,255,0,0.1)_0%,transparent_70%)] blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                         
                         <div className={`relative inline-flex items-center gap-4 ${isLeft ? "md:flex-row-reverse" : "md:flex-row"} mb-5`}>
-                            <div className="p-3.5 rounded-xl bg-lime-500/20 text-lime-400 shadow-xl border border-lime-500/10">
-                                <feature.icon className="w-6 h-6" />
+                            <div className="p-3 rounded-xl bg-lime-500/10 border border-lime-500/20 shadow-[0_0_20px_rgba(189,255,0,0.15)] hover:shadow-[0_0_30px_rgba(189,255,0,0.3)] transition-shadow duration-300">
+                                {(() => {
+                                    const IconComponent = featureIcons[feature.iconKey];
+                                    return <IconComponent />;
+                                })()}
                             </div>
-                            <h3 className="font-heading font-bold text-3xl md:text-4xl text-white uppercase tracking-tight">
+                            <h3 className="font-heading font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white uppercase tracking-tight">
                                 {feature.title}
                             </h3>
                         </div>
-                        <p className="font-sans text-lg text-zinc-400 leading-relaxed max-w-lg relative z-10">
+                        <p className="font-sans text-sm sm:text-base md:text-lg text-zinc-400 leading-relaxed max-w-lg relative z-10">
                             {feature.description}
                         </p>
                         

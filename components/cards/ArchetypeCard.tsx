@@ -3,9 +3,10 @@
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ComponentType } from "react";
 
 interface ArchetypeCardProps {
-  icon: LucideIcon;
+  icon: LucideIcon | ComponentType<object>;
   title: string;
   description: string;
   children?: React.ReactNode; 
@@ -21,6 +22,10 @@ export default function ArchetypeCard({
   className,
   highlightColor = "#bdff00" // Default Acid Lime
 }: ArchetypeCardProps) {
+  
+  // Check if it's a Lucide icon (has displayName or specific props)
+  const isLucideIcon = 'displayName' in Icon || Icon.toString().includes('lucide');
+  
   return (
     <motion.div 
       initial={{ opacity: 0, y: 30 }}
@@ -36,7 +41,7 @@ export default function ArchetypeCard({
       }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={cn(
-        "group relative h-[450px] w-full rounded-[32px] overflow-hidden transition-all duration-300",
+        "group relative h-[380px] sm:h-[420px] md:h-[450px] w-full rounded-[24px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden transition-all duration-300",
         "bg-black/40 backdrop-blur-xl border border-white/10",
         className
       )}
@@ -85,7 +90,13 @@ export default function ArchetypeCard({
                         boxShadow: `0 0 15px ${highlightColor}1A`
                     }}
                 >
-                    <Icon className="w-6 h-6" style={{ color: highlightColor }} strokeWidth={1.5} />
+                    {isLucideIcon ? (
+                        <Icon className="w-6 h-6" style={{ color: highlightColor }} strokeWidth={1.5} />
+                    ) : (
+                        <div style={{ color: highlightColor }}>
+                            <Icon />
+                        </div>
+                    )}
                 </div>
 
                 <div className="space-y-2">
