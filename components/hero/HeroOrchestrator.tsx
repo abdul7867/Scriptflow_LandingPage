@@ -8,7 +8,7 @@ import { AnimationProvider, useAnimationContext, AnimationStage } from "@/animat
 import Terminal, { TerminalStatus } from "./Terminal";
 import InstagramPhone from "./InstagramPhone";
 import HeroHeading from "./HeroHeading";
-import TiltCard, { DriftingBackground } from "@/components/TiltCard";
+import TiltCard, { DriftingBackground } from "@/components/cards/TiltCard";
 import { useSignup } from "@/context/SignupContext";
 
 /**

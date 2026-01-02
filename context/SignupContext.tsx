@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-import SignupModal from "@/components/SignupModal";
+import SignupModal from "@/components/modals/SignupModal";
 
 interface SignupContextType {
   openSignupModal: () => void;

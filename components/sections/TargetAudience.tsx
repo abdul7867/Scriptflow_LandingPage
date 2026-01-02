@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Ghost, Mic, Layers } from "lucide-react";
 
-import ArchetypeCard from "@/components/ui/ArchetypeCard";
+import ArchetypeCard from "@/components/cards/ArchetypeCard";
 import FacelessCreator from "@/components/illustrations/FacelessCreator";
 import FounderCoach from "@/components/illustrations/FounderCoach";
 import TheCurator from "@/components/illustrations/TheCurator";

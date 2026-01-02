@@ -1,13 +1,14 @@
 import HeroOrchestrator from "@/components/hero/HeroOrchestrator";
-import PlatformMarquee from "@/components/PlatformMarquee";
-import Problem from "@/components/Problem";
-import ComparisonToggle from "@/components/ComparisonToggle";
-import LiveDemo from "@/components/LiveDemo";
-import TargetAudience from "@/components/TargetAudience";
-import FoundersManifesto from "@/components/FoundersManifesto";
-import FAQ from "@/components/FAQ";
-import Footer from "@/components/Footer";
-import FloatingDock from "@/components/FloatingDock";
+import PlatformMarquee from "@/components/sections/PlatformMarquee";
+import Problem from "@/components/sections/Problem";
+import ComparisonToggle from "@/components/sections/ComparisonToggle";
+import LiveDemo from "@/components/sections/LiveDemo";
+import TargetAudience from "@/components/sections/TargetAudience";
+import FoundersManifesto from "@/components/sections/FoundersManifesto";
+import FAQ from "@/components/sections/FAQ";
+import Footer from "@/components/layout/Footer";
+import FloatingDock from "@/components/layout/FloatingDock";
+import Features from "@/components/sections/Features";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         <Problem />
         <ComparisonToggle />
         <LiveDemo />
+        <Features />
         <TargetAudience />
         <FoundersManifesto />
         <FAQ />
